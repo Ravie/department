@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Start page</title>
+    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="sweetalert2.all.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div>
+    <h3 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]!</h3>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<div>
+    Добавление нового сотрудника:
+    <form method="post" action="index">
+        <input type="text" name="name" th:value="${name}" placeholder="ФИО"/>
+        <input type="number" min="1" step="1" name="depId" th:value="${depId}" placeholder="Отдел"/>
+        <input type="number" min="0.0" step="0.1" name="salary" th:value="${salary}" placeholder="Зарплата"/>
+        <button type="submit">Добавить сотрудника</button>
+    </form>
+</div>
+<div>Поиск по имени:</div>
+<form method="post" action="filterByName">
+    <input type="text" name="name" th:value="${name}" placeholder="ФИО"/>
+    <button type="submit">Найти</button>
+</form>
+<div>Поиск по отделу:</div>
+<form method="post" action="filterByDepId">
+    <input type="number" min="1" step="1" name="depId" th:value="${depId}" placeholder="ID отдела"/>
+    <button type="submit">Найти</button>
+</form>
+<div>Зарплата:</div>
+<form method="post" action="filterBySalary">
+    <input type="number" min="0.0" step="0.1" name="minSalary" id="min" th:value="${minSalary}" placeholder="Мин"/>
+    <input type="number" min="0.0" step="0.1" name="maxSalary" id="max" th:value="${maxSalary}" placeholder="Макс"/>
+    <button id="findBySalary">Найти</button>
+</form>
+<div>Список сотрудников:</div>
+<table border="1" style="width: 100%">
+    <tr>
+        <th>ID сотрудника</th>
+        <th>Имя сотрудника</th>
+        <th>Отдел</th>
+        <th>Зарплата</th>
+    </tr>
+    <tr th:each="employee: ${employees}">
+        <td th:utext="${employee.id}"/>
+        <td th:utext="${employee.name}"/>
+        <td th:utext="${employee.depId}"/>
+        <td th:utext="${employee.salary}"/>
+    </tr>
+</table>
+</body>
+</html>
