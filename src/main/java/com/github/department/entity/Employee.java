@@ -1,9 +1,6 @@
 package com.github.department.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -15,13 +12,29 @@ public class Employee {
     private Integer depId;
     private Double salary;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User author;
+
     public Employee() {
     }
 
-    public Employee(String name, Integer depId, Double salary) {
+    public Employee(String name, Integer depId, Double salary, User user) {
         this.name = name;
         this.depId = depId;
         this.salary = salary;
+        this.author = user;
+    }
+
+    public String getAuthorName() {
+        return author != null ? author.getUsername() : "<none>";
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public Integer getId() {
