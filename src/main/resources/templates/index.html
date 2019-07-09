@@ -15,27 +15,27 @@
 </div>
 <div>
     Добавление нового сотрудника:
-    <form method="post" action="index">
-        <input type="text" name="name" th:value="${name}" placeholder="ФИО"/>
-        <input type="number" min="1" step="1" name="depId" th:value="${depId}" placeholder="Отдел"/>
-        <input type="number" min="0.0" step="0.1" name="salary" th:value="${salary}" placeholder="Зарплата"/>
+    <form method="post" th:action="@{/index}">
+        <input type="text" name="name" th:value="${name}" value="${name}" placeholder="ФИО"/>
+        <input type="number" min="1" step="1" name="depId" th:value="${depId}" value="${depId}" placeholder="Отдел"/>
+        <input type="number" min="0.0" step="0.1" name="salary" th:value="${salary}" value="${salary}" placeholder="Зарплата"/>
         <button type="submit">Добавить сотрудника</button>
     </form>
 </div>
 <div>Поиск по имени:</div>
-<form method="post" action="filterByName">
-    <input type="text" name="name" th:value="${name}" placeholder="ФИО"/>
+<form method="post" th:action="@{/filterByName}">
+    <input type="text" name="name" th:value="${name}" value="${name}" placeholder="ФИО"/>
     <button type="submit">Найти</button>
 </form>
 <div>Поиск по отделу:</div>
-<form method="post" action="filterByDepId">
-    <input type="number" min="1" step="1" name="depId" th:value="${depId}" placeholder="ID отдела"/>
+<form method="post" th:action="@{/filterByDepId}">
+    <input type="number" min="1" step="1" name="depId" th:value="${depId}" value="${depId}" placeholder="ID отдела"/>
     <button type="submit">Найти</button>
 </form>
 <div>Зарплата:</div>
-<form method="post" action="filterBySalary">
-    <input type="number" min="0.0" step="0.1" name="minSalary" id="min" th:value="${minSalary}" placeholder="Мин"/>
-    <input type="number" min="0.0" step="0.1" name="maxSalary" id="max" th:value="${maxSalary}" placeholder="Макс"/>
+<form method="post" th:action="@{/filterBySalary}">
+    <input type="number" min="0.0" step="0.1" name="minSalary" id="min" th:value="${minSalary}" value="${minSalary}" placeholder="Мин"/>
+    <input type="number" min="0.0" step="0.1" name="maxSalary" id="max" th:value="${maxSalary}" value="${maxSalary}" placeholder="Макс"/>
     <button id="findBySalary">Найти</button>
 </form>
 <div>Список сотрудников:</div>
@@ -45,12 +45,14 @@
         <th>Имя сотрудника</th>
         <th>Отдел</th>
         <th>Зарплата</th>
+        <th>Автор записи</th>
     </tr>
     <tr th:each="employee: ${employees}">
         <td th:utext="${employee.id}"/>
         <td th:utext="${employee.name}"/>
         <td th:utext="${employee.depId}"/>
         <td th:utext="${employee.salary}"/>
+        <td th:utext="${employee.authorName}"/>
     </tr>
 </table>
 </body>
