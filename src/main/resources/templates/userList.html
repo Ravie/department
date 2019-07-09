@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of users</title>
+</head>
+<body>
+    <span><a href="/index">&lt;&lt; Go to main page</a></span>
+    <table border="1" style="width: 100%">
+        <tr>
+            <th>ID клиента</th>
+            <th>Роли</th>
+            <th></th>
+        </tr>
+        <tr th:each="user: ${users}">
+            <td th:utext="${user.username}"/>
+            <td><div th:text="${#strings.setJoin(user.accessLevel, ', ')}"/></td>
+            <td><a th:href="@{|/user/${user.id}|}">Edit</a></td>
+        </tr>
+    </table>
+</body>
+</html>
