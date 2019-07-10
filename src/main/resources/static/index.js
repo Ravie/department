@@ -4,15 +4,9 @@ function minSalaryLessThanMax() {
     if (minSalary > maxSalary) {
         Swal.fire({
             title: "Ошибка ввода!",
-            text: "Минимальное значение больше максимального",
+            text: "Минимальная зарплата больше максимальной",
             type: "warning",
-            backdrop:
-                `
-                rgba(0,0,123,0.4)
-                url("https://sweetalert2.github.io/images/nyan-cat.gif")
-                center left
-                no-repeat
-                `
+            backdrop: `rgba(0,0,123,0.4) `
         });
         return false;
     }
