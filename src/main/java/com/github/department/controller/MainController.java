@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class MainController {
@@ -24,70 +26,67 @@ public class MainController {
     }
 
     @GetMapping("/index")
-    public String index(Model model) {
-        Iterable<Employee> employeeRepoAll = employeeRepo.findAll();
-        model.addAttribute("employees", employeeRepoAll);
+    public String index(@RequestParam(required = false, defaultValue = "") String name,
+                        @RequestParam(required = false, defaultValue = "") Integer depId,
+                        @RequestParam(required = false, defaultValue = "") Double minSalary,
+                        @RequestParam(required = false, defaultValue = "") Double maxSalary,
+                        Model model
+    ) {
+        List<Employee> employeesByName;
+        List<Employee> employeesByDep;
+        List<Employee> employeesBySalary;
+
+        if (name != null && !name.isEmpty()) {
+            employeesByName = employeeRepo.findByName(name);
+        } else {
+            employeesByName = StreamSupport
+                    .stream(employeeRepo.findAll().spliterator(), false)
+                    .collect(Collectors.toList());
+        }
+
+        if (depId != null) {
+            employeesByDep = employeeRepo.findByDepId(depId);
+        } else {
+            employeesByDep = StreamSupport
+                    .stream(employeeRepo.findAll().spliterator(), false)
+                    .collect(Collectors.toList());
+        }
+
+        employeesByDep.retainAll(employeesByName);
+
+        if (minSalary != null && maxSalary != null) {
+            employeesBySalary = employeeRepo.findBySalaryBetween(minSalary, maxSalary);
+        } else if (minSalary != null) {
+            employeesBySalary = employeeRepo.findBySalaryGreaterThanEqual(minSalary);
+        } else if (maxSalary != null) {
+            employeesBySalary = employeeRepo.findBySalaryLessThanEqual(maxSalary);
+        } else {
+            employeesBySalary = StreamSupport
+                    .stream(employeeRepo.findAll().spliterator(), false)
+                    .collect(Collectors.toList());
+        }
+
+        employeesBySalary.retainAll(employeesByDep);
+
+        model.addAttribute("employees", employeesBySalary);
+        model.addAttribute("name", name);
+        model.addAttribute("depId", depId);
+        model.addAttribute("minSalary", minSalary);
+        model.addAttribute("maxSalary", maxSalary);
         return "index";
     }
 
     @PostMapping("/index")
     public String addEmployee(@AuthenticationPrincipal User user, @RequestParam String name, @RequestParam Integer depId, @RequestParam Double salary, Model model) {
         List<Employee> employeeName = employeeRepo.findByName(name);
+
         if (employeeName.isEmpty()) {
             Employee employee = new Employee(name, depId, salary, user);
             employeeRepo.save(employee);
         }
+
         Iterable<Employee> employeeRepoAll = employeeRepo.findAll();
         model.addAttribute("employees", employeeRepoAll);
-        return "index";
-    }
-
-    @PostMapping("filterByName")
-    public String filterByName(@RequestParam String name, Model model) {
-        Iterable<Employee> employees;
-
-        if (name != null && !name.isEmpty()) {
-            employees = employeeRepo.findByName(name);
-        } else {
-            employees = employeeRepo.findAll();
-        }
-
-        model.addAttribute("employees", employees);
-
-        return "index";
-    }
-
-    @PostMapping("filterByDepId")
-    public String filterByDepId(@RequestParam Integer depId, Model model) {
-        Iterable<Employee> employees;
-
-        if (depId != null) {
-            employees = employeeRepo.findByDepId(depId);
-        } else {
-            employees = employeeRepo.findAll();
-        }
-
-        model.addAttribute("employees", employees);
-
-        return "index";
-    }
-
-    @PostMapping("filterBySalary")
-    public String filterBySalary(@RequestParam Double minSalary, @RequestParam Double maxSalary, Model model) {
-        Iterable<Employee> employees;
-
-        if (minSalary != null && maxSalary != null) {
-            employees = employeeRepo.findBySalaryBetween(minSalary, maxSalary);
-        } else if (minSalary != null) {
-            employees = employeeRepo.findBySalaryGreaterThanEqual(minSalary);
-        } else if (maxSalary != null) {
-            employees = employeeRepo.findBySalaryLessThanEqual(maxSalary);
-        } else {
-            employees = employeeRepo.findAll();
-        }
-
-        model.addAttribute("employees", employees);
-
         return "index";
     }
 }
