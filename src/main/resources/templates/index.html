@@ -2,8 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Start page</title>
-    <script type="text/javascript" src="index.js"></script>
-    <script type="text/javascript" src="sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../static/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../static/index.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script> -->
+    <link rel="stylesheet" type="text/css" th:href="@{/static/index.css}">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
@@ -12,32 +14,26 @@
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>
     </form>
-    <span><a href="/user">List of all users</a></span>
+    <div><span><a href="/user">Управление учетными записями</a></span></div>
 </div>
 <div>
     Добавление нового сотрудника:
-    <form method="post" th:action="@{/index}">
-        <input type="text" name="name" th:value="${name}" value="${name}" placeholder="ФИО"/>
-        <input type="number" min="1" step="1" name="depId" th:value="${depId}" value="${depId}" placeholder="Отдел"/>
-        <input type="number" min="0.0" step="0.1" name="salary" th:value="${salary}" value="${salary}" placeholder="Зарплата"/>
+    <form th:action="@{/index}" method="post">
+        <input type="text" name="name" placeholder="ФИО"/>
+        <input type="number" min="1" step="1" name="depId" placeholder="Отдел"/>
+        <input type="number" min="0.0" step="0.1" name="salary" placeholder="Зарплата"/>
         <button type="submit">Добавить сотрудника</button>
     </form>
 </div>
-<div>Поиск по имени:</div>
-<form method="post" th:action="@{/filterByName}">
-    <input type="text" name="name" th:value="${name}" value="${name}" placeholder="ФИО"/>
-    <button type="submit">Найти</button>
-</form>
-<div>Поиск по отделу:</div>
-<form method="post" th:action="@{/filterByDepId}">
-    <input type="number" min="1" step="1" name="depId" th:value="${depId}" value="${depId}" placeholder="ID отдела"/>
-    <button type="submit">Найти</button>
-</form>
-<div>Зарплата:</div>
-<form method="post" th:action="@{/filterBySalary}">
-    <input type="number" min="0.0" step="0.1" name="minSalary" id="min" th:value="${minSalary}" value="${minSalary}" placeholder="Мин"/>
-    <input type="number" min="0.0" step="0.1" name="maxSalary" id="max" th:value="${maxSalary}" value="${maxSalary}" placeholder="Макс"/>
-    <button id="findBySalary">Найти</button>
+<form th:action="@{/index}" method="get" onsubmit="return minSalaryLessThanMax();">
+    <div>Поиск:</div>
+    <div>
+        <label>по имени:<input type="text" name="name" th:value="${name}" placeholder="ФИО"/></label>
+        <label>по отделу:<input type="number" min="1" step="1" name="depId" th:value="${depId}" placeholder="ID отдела"/></label>
+        <label for="min">по мин ЗП:</label><input type="number" min="11280.0" step="0.1" name="minSalary" id="min" th:value="${minSalary}" placeholder="Мин"/>
+        <label for="max">по макс ЗП:</label><input type="number" min="11280.0" step="0.1" name="maxSalary" id="max" th:value="${maxSalary}" placeholder="Макс"/>
+        <button id="filter" type="submit">Найти</button>
+    </div>
 </form>
 <div>Список сотрудников:</div>
 <table border="1" style="width: 100%">
@@ -47,13 +43,15 @@
         <th>Отдел</th>
         <th>Зарплата</th>
         <th>Автор записи</th>
+        <th></th>
     </tr>
     <tr th:each="employee: ${employees}">
-        <td th:utext="${employee.id}"/>
-        <td th:utext="${employee.name}"/>
-        <td th:utext="${employee.depId}"/>
-        <td th:utext="${employee.salary}"/>
-        <td th:utext="${employee.authorName}"/>
+        <td th:utext="${employee.id}"></td>
+        <td th:utext="${employee.name}"></td>
+        <td th:utext="${employee.depId}"></td>
+        <td th:utext="${employee.salary}"></td>
+        <td th:utext="${employee.authorName}"></td>
+        <td><a th:href="@{|/employee/${employee.id}|}">Edit</a></td>
     </tr>
 </table>
 </body>
