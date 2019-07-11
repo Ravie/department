@@ -6,17 +6,19 @@
 </head>
 <body>
 <div th:insert="~{fragments/helloUser :: hello}"></div>
-    <table border="1" style="width: 100%">
-        <tr>
-            <th>Логин</th>
-            <th>Уровни доступа</th>
-            <th></th>
-        </tr>
-        <tr th:each="user: ${users}">
-            <td th:utext="${user.username}"/>
-            <td><div th:text="${#strings.setJoin(user.accessLevel, ', ')}"/></td>
-            <td><a th:href="@{|/user/${user.id}|}">Edit</a></td>
-        </tr>
-    </table>
+<table border="1" style="width: 100%">
+    <tr>
+        <th>Логин</th>
+        <th>Уровни доступа</th>
+        <th></th>
+    </tr>
+    <tr th:each="user: ${users}">
+        <td th:utext="${user.username}"/>
+        <td>
+            <div th:text="${#strings.setJoin(user.accessLevel, ', ')}"/>
+        </td>
+        <td><a th:href="@{|/user/${user.id}|}">Edit</a></td>
+    </tr>
+</table>
 </body>
 </html>

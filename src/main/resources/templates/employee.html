@@ -13,9 +13,11 @@
         <input type="hidden" th:value="${employee.id}" name="employeeId">
         <input type="text" name="name" th:value="${employee.name}" placeholder="ФИО"/>
         <select id="depId" name="depId">
-            <option th:each="dep : ${departments}" th:value="${dep.getId()}" th:text="${dep.getName()}" th:selected="${dep==employee.department}"></option>
+            <option th:each="dep : ${departments}" th:value="${dep.getId()}" th:text="${dep.getName()}"
+                    th:selected="${dep==employee.department}"></option>
         </select>
-        <input type="number" min="11280.00" step="0.01" name="salary" th:value="${employee.salary}" placeholder="Зарплата"/>
+        <input type="number" min="11280.00" step="0.01" name="salary" th:value="${employee.salary}"
+               placeholder="Зарплата"/>
         <button type="submit">Сохранить изменения</button>
     </form>
 </div>

@@ -32,8 +32,10 @@
     <tr th:each="department: ${departments}">
         <td th:utext="${department.id}"></td>
         <td th:utext="${department.name}"></td>
-        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/department/edit/${department.id}|}"><img src="../static/images/edit_icon.png" width="32" height="32"></a></td>
-        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/department/delete/${department.id}|}"><img src="../static/images/delete_icon.png" width="32" height="32"></a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/department/edit/${department.id}|}"><img
+                src="../static/images/edit_icon.png" width="32" height="32"></a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/department/delete/${department.id}|}"><img
+                src="../static/images/delete_icon.png" width="32" height="32"></a></td>
     </tr>
 </table>
 </body>

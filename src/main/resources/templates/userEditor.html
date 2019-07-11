@@ -6,18 +6,18 @@
 </head>
 <body>
 <div th:insert="~{fragments/helloUser :: hello}"></div>
-    <form th:action="@{/user}" method="POST">
-        <label>Введите новое имя пользователя:
-            <input type="text" th:value="${user.username}" name="username">
+<form th:action="@{/user}" method="POST">
+    <label>Введите новое имя пользователя:
+        <input type="text" th:value="${user.username}" name="username">
+    </label>
+    <div th:each="role:${roles}">
+        <label>
+            <input type="checkbox" th:name="${role}" th:checked="${#lists.contains(user.accessLevel, role)}">
+            <td th:utext="${role}"/>
         </label>
-        <div th:each="role:${roles}">
-            <label>
-                <input type="checkbox" th:name="${role}" th:checked="${#lists.contains(user.accessLevel, role)}">
-                <td th:utext="${role}"/>
-            </label>
-        </div>
-        <input type="hidden" th:value="${user.id}" name="userId">
-        <button type="submit">Save changes</button>
-    </form>
+    </div>
+    <input type="hidden" th:value="${user.id}" name="userId">
+    <button type="submit">Save changes</button>
+</form>
 </body>
 </html>

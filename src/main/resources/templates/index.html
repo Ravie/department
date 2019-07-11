@@ -27,9 +27,12 @@
     <div>Поиск:</div>
     <div>
         <label>по имени:<input type="text" name="name" th:value="${name}" placeholder="ФИО"/></label>
-        <label>по отделу:<input type="number" min="1" step="1" name="depId" th:value="${depId}" placeholder="ID отдела"/></label>
-        <label for="min">по мин ЗП:</label><input type="number" min="11280.00" step="0.01" name="minSalary" id="min" th:value="${minSalary}" placeholder="Мин"/>
-        <label for="max">по макс ЗП:</label><input type="number" min="11280.00" step="0.01" name="maxSalary" id="max" th:value="${maxSalary}" placeholder="Макс"/>
+        <label>по отделу:<input type="number" min="1" step="1" name="depId" th:value="${depId}"
+                                placeholder="ID отдела"/></label>
+        <label for="min">по мин ЗП:</label><input type="number" min="11280.00" step="0.01" name="minSalary" id="min"
+                                                  th:value="${minSalary}" placeholder="Мин"/>
+        <label for="max">по макс ЗП:</label><input type="number" min="11280.00" step="0.01" name="maxSalary" id="max"
+                                                   th:value="${maxSalary}" placeholder="Макс"/>
         <button id="filter" type="submit">Найти</button>
     </div>
 </form>
@@ -48,8 +51,10 @@
         <td th:utext="${employee.name}"></td>
         <td th:utext="${employee.department.getName()}"></td>
         <td th:utext="${employee.getFormattedSalary()}"></td>
-        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/employee/edit/${employee.id}|}"><img src="../static/images/edit_icon.png" width="32" height="32"></a></td>
-        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/employee/delete/${employee.id}|}"><img src="../static/images/delete_icon.png" width="32" height="32"></a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/employee/edit/${employee.id}|}"><img
+                src="../static/images/edit_icon.png" width="32" height="32"></a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/employee/delete/${employee.id}|}"><img
+                src="../static/images/delete_icon.png" width="32" height="32"></a></td>
     </tr>
 </table>
 </body>
