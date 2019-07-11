@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -31,7 +32,7 @@ public class MainController {
 
     @GetMapping("/index")
     public String index(@RequestParam(required = false, defaultValue = "") String name,
-                        @RequestParam(required = false, defaultValue = "") Integer depId,
+                        @RequestParam(required = false, defaultValue = "") String depName,
                         @RequestParam(required = false, defaultValue = "") Double minSalary,
                         @RequestParam(required = false, defaultValue = "") Double maxSalary,
                         Model model
@@ -40,6 +41,7 @@ public class MainController {
         List<Employee> employeesByDep;
         List<Employee> employeesBySalary;
         Iterable<Department> departments = depRepo.findAll();
+        List<Department> dep = depRepo.findByName(depName);
 
         if (name != null && !name.isEmpty()) {
             employeesByName = employeeRepo.findByName(name);
@@ -49,8 +51,10 @@ public class MainController {
                     .collect(Collectors.toList());
         }
 
-        if (depId != null) {
-            employeesByDep = employeeRepo.findByDepartment(depId);
+        if (!dep.isEmpty()) {
+            employeesByDep = employeeRepo.findByDepartment(dep.get(0));
+        } else if (!depName.isEmpty()) {
+            employeesByDep = new ArrayList<>();
         } else {
             employeesByDep = StreamSupport
                     .stream(employeeRepo.findAll().spliterator(), false)
@@ -76,7 +80,7 @@ public class MainController {
         model.addAttribute("employees", employeesBySalary);
         model.addAttribute("departments", departments);
         model.addAttribute("name", name);
-        model.addAttribute("depId", depId);
+        model.addAttribute("depName", depName);
         model.addAttribute("minSalary", minSalary);
         model.addAttribute("maxSalary", maxSalary);
         return "index";

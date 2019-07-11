@@ -27,8 +27,8 @@
     <div>Поиск:</div>
     <div>
         <label>по имени:<input type="text" name="name" th:value="${name}" placeholder="ФИО"/></label>
-        <label>по отделу:<input type="number" min="1" step="1" name="depId" th:value="${depId}"
-                                placeholder="ID отдела"/></label>
+        <label>по отделу:<input type="text" name="depName" th:value="${depName}"
+                                placeholder="Отдел"/></label>
         <label for="min">по мин ЗП:</label><input type="number" min="11280.00" step="0.01" name="minSalary" id="min"
                                                   th:value="${minSalary}" placeholder="Мин"/>
         <label for="max">по макс ЗП:</label><input type="number" min="11280.00" step="0.01" name="maxSalary" id="max"

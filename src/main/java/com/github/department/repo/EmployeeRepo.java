@@ -1,5 +1,6 @@
 package com.github.department.repo;
 
+import com.github.department.entity.Department;
 import com.github.department.entity.Employee;
 import org.springframework.data.repository.CrudRepository;
 
@@ -8,7 +9,7 @@ import java.util.List;
 public interface EmployeeRepo extends CrudRepository<Employee, Integer> {
     List<Employee> findByName(String name);
 
-    List<Employee> findByDepartment(Integer department);
+    List<Employee> findByDepartment(Department department);
 
     List<Employee> findBySalaryBetween(Double minSalary, Double maxSalary);
 
