@@ -2,17 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <span><a href="/index">&lt;&lt; Назад</a></span>
     <meta charset="UTF-8">
     <title>Отделы</title>
 </head>
 <body>
-<div>
-    <form th:action="@{/logout}" method="post">
-        <h3 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]! <input type="submit" value="Выйти"/></h3>
-    </form>
-    <div sec:authorize="hasRole('ROLE_ADMIN')"><span><a href="/user">Управление учетными записями</a></span></div>
-</div>
+<div th:insert="~{fragments/helloUser :: hello}"></div>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     Добавление нового отдела:
     <form th:action="@{/department}" method="post">

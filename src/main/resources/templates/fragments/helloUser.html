@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="hello">
+    <form th:action="@{/logout}" method="post">
+        <h3 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]! <input type="submit" value="Выйти"/></h3>
+    </form>
+    <span><a href="/department">К списку отделов</a></span>
+    <span><a href="/index">К списку сотрудников</a></span>
+    <div sec:authorize="hasRole('ROLE_ADMIN')"><span><a href="/user">Управление учетными записями</a></span></div>
+</div>
+</body>
+</html>

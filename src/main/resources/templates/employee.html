@@ -6,7 +6,7 @@
     <title>Сотрудники</title>
 </head>
 <body>
-<span><a href="/index">&lt;&lt; Назад</a></span>
+<div th:insert="~{fragments/helloUser :: hello}"></div>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     Редактирование данных сотрудника:
     <form th:action="@{/employee}" method="post">

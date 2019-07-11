@@ -10,13 +10,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<div>
-    <form th:action="@{/logout}" method="post">
-        <h3 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]! <input type="submit" value="Выйти"/></h3>
-    </form>
-    <span><a href="/department">К списку отделов</a></span>
-    <div sec:authorize="hasRole('ROLE_ADMIN')"><span><a href="/user">Управление учетными записями</a></span></div>
-</div>
+<div th:insert="~{fragments/helloUser :: hello}"></div>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     Добавление нового сотрудника:
     <form th:action="@{/index}" method="post">
