@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
@@ -20,6 +22,9 @@ import java.util.stream.Collectors;
 public class UserController {
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    HttpServletRequest httpServletRequest;
 
     @GetMapping
     public String userList(Model model) {
@@ -38,7 +43,10 @@ public class UserController {
     public String saveChanges(@RequestParam("userId") User user,
                               @RequestParam String username,
                               @RequestParam Map<String, String> form
-    ) {
+    ) throws ServletException {
+        boolean editActiveUser = false;
+        if (user.getUsername().equals(httpServletRequest.getRemoteUser()))
+            editActiveUser = true;
         user.setUsername(username);
 
         Set<String> roles = Arrays.stream(Role.values())
@@ -47,14 +55,16 @@ public class UserController {
 
         user.getAccessLevel().clear();
 
-        for(String key : form.keySet()) {
-            if(roles.contains(key)) {
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
                 user.getAccessLevel().add(Role.valueOf(key));
             }
         }
 
         userRepo.save(user);
 
+        if (editActiveUser)
+            httpServletRequest.logout();
         return "redirect:/user";
     }
 }
