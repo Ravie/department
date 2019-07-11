@@ -21,7 +21,8 @@
     Добавление нового сотрудника:
     <form th:action="@{/index}" method="post">
         <input type="text" name="name" placeholder="ФИО"/>
-        <select name="depId">
+        <select id="depId" name="depId">
+            <option>--</option>
             <option th:each="dep : ${departments}" th:value="${dep.getId()}" th:text="${dep.getName()}"></option>
         </select>
         <input type="number" min="11280.00" step="0.01" name="salary" placeholder="Зарплата"/>
