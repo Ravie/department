@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <title>Start page</title>
     <script type="text/javascript" src="../static/sweetalert2.all.min.js"></script>
@@ -14,9 +15,9 @@
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>
     </form>
-    <div><span><a href="/user">Управление учетными записями</a></span></div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')"><span><a href="/user">Управление учетными записями</a></span></div>
 </div>
-<div>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
     Добавление нового сотрудника:
     <form th:action="@{/index}" method="post">
         <input type="text" name="name" placeholder="ФИО"/>
@@ -45,7 +46,7 @@
         <th>Отдел</th>
         <th>Зарплата</th>
         <th>Автор записи</th>
-        <th></th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
     </tr>
     <tr th:each="employee: ${employees}">
         <td th:utext="${employee.id}"></td>
@@ -53,7 +54,7 @@
         <td th:utext="${employee.department.getName()}"></td>
         <td th:utext="${employee.salary}"></td>
         <td th:utext="${employee.authorName}"></td>
-        <td><a th:href="@{|/employee/${employee.id}|}">Edit</a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/employee/${employee.id}|}">Edit</a></td>
     </tr>
 </table>
 </body>
