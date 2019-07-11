@@ -24,7 +24,7 @@
         <select name="depId">
             <option th:each="dep : ${departments}" th:value="${dep.getId()}" th:text="${dep.getName()}"></option>
         </select>
-        <input type="number" pattern="^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$" min="11280.00" step="0.01" name="salary" placeholder="Зарплата"/>
+        <input type="number" min="11280.00" step="0.01" name="salary" placeholder="Зарплата"/>
         <button type="submit">Добавить сотрудника</button>
     </form>
 </div>
