@@ -1,7 +1,9 @@
 package com.github.department.controller;
 
+import com.github.department.entity.Department;
 import com.github.department.entity.Employee;
 import com.github.department.entity.User;
+import com.github.department.repo.DepartmentRepo;
 import com.github.department.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,8 @@ import java.util.stream.StreamSupport;
 public class MainController {
     @Autowired
     private EmployeeRepo employeeRepo;
+    @Autowired
+    private DepartmentRepo depRepo;
 
     @GetMapping("/")
     public String welcome() {
@@ -35,6 +39,7 @@ public class MainController {
         List<Employee> employeesByName;
         List<Employee> employeesByDep;
         List<Employee> employeesBySalary;
+        Iterable<Department> departments = depRepo.findAll();
 
         if (name != null && !name.isEmpty()) {
             employeesByName = employeeRepo.findByName(name);
@@ -45,7 +50,7 @@ public class MainController {
         }
 
         if (depId != null) {
-            employeesByDep = employeeRepo.findByDepId(depId);
+            employeesByDep = employeeRepo.findByDepartment(depId);
         } else {
             employeesByDep = StreamSupport
                     .stream(employeeRepo.findAll().spliterator(), false)
@@ -69,6 +74,7 @@ public class MainController {
         employeesBySalary.retainAll(employeesByDep);
 
         model.addAttribute("employees", employeesBySalary);
+        model.addAttribute("departments", departments);
         model.addAttribute("name", name);
         model.addAttribute("depId", depId);
         model.addAttribute("minSalary", minSalary);
@@ -81,12 +87,12 @@ public class MainController {
         List<Employee> employeeName = employeeRepo.findByName(name);
 
         if (employeeName.isEmpty()) {
-            Employee employee = new Employee(name, depId, salary, user);
+            Employee employee = new Employee(name, depRepo.findById(depId).get(), salary, user);
             employeeRepo.save(employee);
         }
 
         Iterable<Employee> employeeRepoAll = employeeRepo.findAll();
         model.addAttribute("employees", employeeRepoAll);
-        return "index";
+        return "redirect:/index";
     }
 }

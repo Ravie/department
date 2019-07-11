@@ -8,7 +8,7 @@ import java.util.List;
 public interface EmployeeRepo extends CrudRepository<Employee, Integer> {
     List<Employee> findByName(String name);
 
-    List<Employee> findByDepId(Integer depId);
+    List<Employee> findByDepartment(Integer department);
 
     List<Employee> findBySalaryBetween(Double minSalary, Double maxSalary);
 

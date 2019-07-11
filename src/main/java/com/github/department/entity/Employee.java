@@ -9,18 +9,18 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
-    private Integer depId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Department department;
     private Double salary;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private User author;
 
     public Employee() {
     }
 
-    public Employee(String name, Integer depId, Double salary, User user) {
+    public Employee(String name, Department department, Double salary, User user) {
         this.name = name;
-        this.depId = depId;
+        this.department = department;
         this.salary = salary;
         this.author = user;
     }
@@ -53,12 +53,12 @@ public class Employee {
         this.name = name;
     }
 
-    public Integer getDepId() {
-        return depId;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepId(Integer depId) {
-        this.depId = depId;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public Double getSalary() {

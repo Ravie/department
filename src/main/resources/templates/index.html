@@ -20,8 +20,10 @@
     Добавление нового сотрудника:
     <form th:action="@{/index}" method="post">
         <input type="text" name="name" placeholder="ФИО"/>
-        <input type="number" min="1" step="1" name="depId" placeholder="Отдел"/>
-        <input type="number" min="0.0" step="0.1" name="salary" placeholder="Зарплата"/>
+        <select name="depId">
+            <option th:each="dep : ${departments}" th:value="${dep.getId()}" th:text="${dep.getName()}"></option>
+        </select>
+        <input type="number" pattern="^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$" min="11280.00" step="0.01" name="salary" placeholder="Зарплата"/>
         <button type="submit">Добавить сотрудника</button>
     </form>
 </div>
@@ -30,8 +32,8 @@
     <div>
         <label>по имени:<input type="text" name="name" th:value="${name}" placeholder="ФИО"/></label>
         <label>по отделу:<input type="number" min="1" step="1" name="depId" th:value="${depId}" placeholder="ID отдела"/></label>
-        <label for="min">по мин ЗП:</label><input type="number" min="11280.0" step="0.1" name="minSalary" id="min" th:value="${minSalary}" placeholder="Мин"/>
-        <label for="max">по макс ЗП:</label><input type="number" min="11280.0" step="0.1" name="maxSalary" id="max" th:value="${maxSalary}" placeholder="Макс"/>
+        <label for="min">по мин ЗП:</label><input type="number" min="11280.00" step="0.01" name="minSalary" id="min" th:value="${minSalary}" placeholder="Мин"/>
+        <label for="max">по макс ЗП:</label><input type="number" min="11280.00" step="0.01" name="maxSalary" id="max" th:value="${maxSalary}" placeholder="Макс"/>
         <button id="filter" type="submit">Найти</button>
     </div>
 </form>
@@ -48,7 +50,7 @@
     <tr th:each="employee: ${employees}">
         <td th:utext="${employee.id}"></td>
         <td th:utext="${employee.name}"></td>
-        <td th:utext="${employee.depId}"></td>
+        <td th:utext="${employee.department.getName()}"></td>
         <td th:utext="${employee.salary}"></td>
         <td th:utext="${employee.authorName}"></td>
         <td><a th:href="@{|/employee/${employee.id}|}">Edit</a></td>
