@@ -47,6 +47,7 @@
         <th>Зарплата</th>
         <th>Автор записи</th>
         <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
     </tr>
     <tr th:each="employee: ${employees}">
         <td th:utext="${employee.id}"></td>
@@ -54,7 +55,8 @@
         <td th:utext="${employee.department.getName()}"></td>
         <td th:utext="${employee.salary}"></td>
         <td th:utext="${employee.authorName}"></td>
-        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/employee/${employee.id}|}">Edit</a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/employee/edit/${employee.id}|}"><img src="../static/images/edit_icon.png" width="32" height="32"></a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/employee/delete/${employee.id}|}"><img src="../static/images/delete_icon.png" width="32" height="32"></a></td>
     </tr>
 </table>
 </body>
