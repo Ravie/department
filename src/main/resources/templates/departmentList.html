@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <span><a href="/index">&lt;&lt; Назад</a></span>
+    <meta charset="UTF-8">
+    <title>Отделы</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <h3 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]! <input type="submit" value="Выйти"/></h3>
+    </form>
+    <div sec:authorize="hasRole('ROLE_ADMIN')"><span><a href="/user">Управление учетными записями</a></span></div>
+</div>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    Добавление нового отдела:
+    <form th:action="@{/department}" method="post">
+        <input type="text" name="name" placeholder="Отдел"/>
+        <button type="submit">Добавить отдел</button>
+    </form>
+</div>
+<form th:action="@{/department}" method="get">
+    <div>Поиск:</div>
+    <div>
+        <label>по имени:<input type="text" name="name" th:value="${name}" placeholder="Отдел"/></label>
+        <button id="filter" type="submit">Найти</button>
+    </div>
+</form>
+<div>Список отделов:</div>
+<table border="1" style="width: 100%">
+    <tr>
+        <th>ID отдела</th>
+        <th>Название отдела</th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+    </tr>
+    <tr th:each="department: ${departments}">
+        <td th:utext="${department.id}"></td>
+        <td th:utext="${department.name}"></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/department/edit/${department.id}|}"><img src="../static/images/edit_icon.png" width="32" height="32"></a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/department/delete/${department.id}|}"><img src="../static/images/delete_icon.png" width="32" height="32"></a></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,9 +1,6 @@
 package com.github.department.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -12,12 +9,19 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User author;
 
     public Department() {
     }
 
-    public Department(String name) {
+    public Department(String name, User user) {
         this.name = name;
+        this.author = user;
+    }
+
+    public String getAuthorName() {
+        return author != null ? author.getUsername() : "<none>";
     }
 
     public Integer getId() {

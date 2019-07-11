@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <span><a href="/department">&lt;&lt; Назад</a></span>
+    <meta charset="UTF-8">
+    <title>Редактирование отдела</title>
+</head>
+<body>
+<form th:action="@{/department/edit}" method="POST">
+    <input type="text" th:value="${currentDep.name}" name="depName">
+    <input type="hidden" th:value="${currentDep.id}" name="depId">
+    <button type="submit">Save changes</button>
+</form>
+</body>
+</html>
