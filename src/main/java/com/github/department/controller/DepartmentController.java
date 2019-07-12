@@ -64,12 +64,8 @@ public class DepartmentController {
     }
 
     @PostMapping("/edit")
-    public String saveChanges(@RequestParam("depId") Department department,
-                              @RequestParam("depName") String depName
-    ) {
-        department.setName(depName);
-
-        departmentRepo.save(department);
+    public String saveChanges(@ModelAttribute Department currentDep) {
+        departmentRepo.save(currentDep);
 
         return "redirect:/department";
     }

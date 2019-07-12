@@ -8,11 +8,11 @@
 </head>
 <body>
 <div th:insert="~{fragments/helloUser :: hello}"></div>
-<form method="POST" onsubmit="return checkDepartmentForm();" th:action="@{/department/edit/}">
+<form method="POST" th:object="${currentDep}" onsubmit="return checkDepartmentForm();" th:action="@{/department/edit/}">
     <label>Введите новое имя отдела:
-        <input id="name" name="depName" th:value="${currentDep.name}" type="text" required>
+        <input id="name" name="depName" th:field="*{name}" type="text" required>
     </label>
-    <input name="depId" th:value="${currentDep.id}" type="hidden">
+    <input name="depId" th:field="*{id}" type="hidden">
     <button type="submit">Сохранить изменения</button>
 </form>
 </body>
