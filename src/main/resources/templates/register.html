@@ -6,8 +6,8 @@
 <body>
 Регистрация нового пользователя:
 <form method="post" th:action="@{/register}">
-    <div><label> Имя пользователя: <input name="username" type="text"/> </label></div>
-    <div><label> Пароль: <input name="password" type="password"/> </label></div>
+    <div><label> Имя пользователя: <input name="username" type="text" required/> </label></div>
+    <div><label> Пароль: <input name="password" type="password" required/> </label></div>
     <div><input type="submit" value="ОК"/></div>
 </form>
 </body>

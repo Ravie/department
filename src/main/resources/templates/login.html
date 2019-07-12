@@ -12,8 +12,8 @@
 </div>
 Авторизация:
 <form method="post" th:action="@{/login}">
-    <div><label> Имя пользователя: <input name="username" type="text"/> </label></div>
-    <div><label> Пароль: <input name="password" type="password"/> </label></div>
+    <div><label> Имя пользователя: <input name="username" type="text" required/> </label></div>
+    <div><label> Пароль: <input name="password" type="password" required/> </label></div>
     <div><input type="submit" value="Войти"/></div>
 </form>
 <a href="/register">Зарегистрироваться</a>

@@ -14,12 +14,12 @@
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     Добавление нового сотрудника:
     <form method="post" onsubmit="return checkEmployeeForm();" th:action="@{/index}">
-        <input id="name" name="name" placeholder="ФИО" type="text"/>
-        <select id="depId" name="depId">
-            <option>--</option>
+        <input id="name" name="name" placeholder="ФИО" type="text" required/>
+        <select id="depId" name="depId" required>
+            <option></option>
             <option th:each="dep : ${departments}" th:text="${dep.getName()}" th:value="${dep.getId()}"></option>
         </select>
-        <input id="salary" min="11280.00" name="salary" placeholder="Зарплата" step="0.01" type="number"/>
+        <input id="salary" min="11280.00" name="salary" placeholder="Зарплата" step="0.01" type="number" required/>
         <button type="submit">Добавить сотрудника</button>
     </form>
 </div>
