@@ -13,13 +13,13 @@
 <div th:insert="~{fragments/helloUser :: hello}"></div>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     Добавление нового сотрудника:
-    <form th:action="@{/index}" method="post">
-        <input type="text" name="name" placeholder="ФИО"/>
+    <form th:action="@{/index}" method="post" onsubmit="return checkEmployeeForm();">
+        <input type="text" id="name" name="name" placeholder="ФИО"/>
         <select id="depId" name="depId">
             <option>--</option>
             <option th:each="dep : ${departments}" th:value="${dep.getId()}" th:text="${dep.getName()}"></option>
         </select>
-        <input type="number" min="11280.00" step="0.01" name="salary" placeholder="Зарплата"/>
+        <input type="number" min="11280.00" step="0.01" id="salary" name="salary" placeholder="Зарплата"/>
         <button type="submit">Добавить сотрудника</button>
     </form>
 </div>

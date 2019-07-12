@@ -3,14 +3,16 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
+    <script type="text/javascript" src="../static/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="../static/index.js"></script>
     <title>Отделы</title>
 </head>
 <body>
 <div th:insert="~{fragments/helloUser :: hello}"></div>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     Добавление нового отдела:
-    <form th:action="@{/department}" method="post">
-        <input type="text" name="name" placeholder="Отдел"/>
+    <form th:action="@{/department}" method="post" onsubmit="return checkDepartmentForm();">
+        <input type="text" id="name" name="name" placeholder="Отдел"/>
         <button type="submit">Добавить отдел</button>
     </form>
 </div>
