@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script type="text/javascript" src="../static/sweetalert2.all.min.js"></script>
-    <script type="text/javascript" src="../static/index.js"></script>
+    <script src="../static/sweetalert2.all.min.js" type="text/javascript"></script>
+    <script src="../static/index.js" type="text/javascript"></script>
     <title>Отделы</title>
 </head>
 <body>
 <div th:insert="~{fragments/helloUser :: hello}"></div>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     Добавление нового отдела:
-    <form th:action="@{/department}" method="post" onsubmit="return checkDepartmentForm();">
-        <input type="text" id="name" name="name" placeholder="Отдел"/>
+    <form method="post" onsubmit="return checkDepartmentForm();" th:action="@{/department}">
+        <input id="name" name="name" placeholder="Отдел" type="text"/>
         <button type="submit">Добавить отдел</button>
     </form>
 </div>
-<form th:action="@{/department}" method="get">
+<form method="get" th:action="@{/department}">
     <div>Поиск:</div>
     <div>
-        <label>по имени:<input type="text" name="name" th:value="${name}" placeholder="Отдел"/></label>
+        <label>по имени:<input name="name" placeholder="Отдел" th:value="${name}" type="text"/></label>
         <button id="filter" type="submit">Найти</button>
     </div>
 </form>
@@ -35,9 +35,9 @@
         <td th:utext="${department.id}"></td>
         <td th:utext="${department.name}"></td>
         <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/department/edit/${department.id}|}"><img
-                src="../static/images/edit_icon.png" width="32" height="32"></a></td>
+                height="32" src="../static/images/edit_icon.png" width="32"></a></td>
         <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{|/department/delete/${department.id}|}"><img
-                src="../static/images/delete_icon.png" width="32" height="32"></a></td>
+                height="32" src="../static/images/delete_icon.png" width="32"></a></td>
     </tr>
 </table>
 </body>

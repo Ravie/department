@@ -11,9 +11,9 @@
     Вы вышли из аккаунта.
 </div>
 Авторизация:
-<form th:action="@{/login}" method="post">
-    <div><label> Имя пользователя: <input type="text" name="username"/> </label></div>
-    <div><label> Пароль: <input type="password" name="password"/> </label></div>
+<form method="post" th:action="@{/login}">
+    <div><label> Имя пользователя: <input name="username" type="text"/> </label></div>
+    <div><label> Пароль: <input name="password" type="password"/> </label></div>
     <div><input type="submit" value="Войти"/></div>
 </form>
 <a href="/register">Зарегистрироваться</a>

@@ -65,12 +65,12 @@ public class Employee {
         return salary;
     }
 
-    public String getFormattedSalary() {
-        return java.text.NumberFormat.getCurrencyInstance().format(salary);
-    }
-
     public void setSalary(Double salary) {
         this.salary = salary;
+    }
+
+    public String getFormattedSalary() {
+        return java.text.NumberFormat.getCurrencyInstance().format(salary);
     }
 
     @Override

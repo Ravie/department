@@ -25,8 +25,7 @@ function checkEmployeeForm() {
             backdrop: `rgba(0,0,123,0.4) `
         });
         return false;
-    }
-    else if (depId == "--") {
+    } else if (depId == "--") {
         Swal.fire({
             title: "Ошибка ввода!",
             text: "Выберите отдел",
@@ -34,8 +33,7 @@ function checkEmployeeForm() {
             backdrop: `rgba(0,0,123,0.4) `
         });
         return false;
-    }
-    else if (salary == "") {
+    } else if (salary == "") {
         Swal.fire({
             title: "Ошибка ввода!",
             text: "Зарплата не заполнена",

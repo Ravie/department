@@ -33,6 +33,10 @@ public class User implements UserDetails {
         return username;
     }
 
+    public void setUsername(String userName) {
+        this.username = userName;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -51,10 +55,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return getActive();
-    }
-
-    public void setUsername(String userName) {
-        this.username = userName;
     }
 
     @Override
