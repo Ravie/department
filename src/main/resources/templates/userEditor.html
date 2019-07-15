@@ -18,7 +18,8 @@
             <td th:utext="${role}"/>
         </label>
     </div>
-    <input name="userId" th:value="${user.id}" type="hidden">
+    <input id="userId" name="userId" th:value="${user.id}" type="hidden">
+    <input id="curUserId" name="curUserId" th:value="${#authentication.principal.getId()}" type="hidden">
     <button type="submit">Сохранить изменения</button>
 </form>
 </body>

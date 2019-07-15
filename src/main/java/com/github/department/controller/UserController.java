@@ -5,6 +5,7 @@ import com.github.department.entity.User;
 import com.github.department.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,13 +41,12 @@ public class UserController {
     }
 
     @PostMapping
-    public String saveChanges(@RequestParam("userId") User user,
+    public String saveChanges(@AuthenticationPrincipal User curUser,
+                              @RequestParam("userId") User user,
                               @RequestParam String username,
-                              @RequestParam Map<String, String> form
+                              @RequestParam Map<String, String> form,
+                              Model model
     ) throws ServletException {
-        boolean editActiveUser = false;
-        if (user.getUsername().equals(httpServletRequest.getRemoteUser()))
-            editActiveUser = true;
         user.setUsername(username);
 
         Set<String> roles = Arrays.stream(Role.values())
@@ -63,8 +63,9 @@ public class UserController {
 
         userRepo.save(user);
 
-        if (editActiveUser)
+        if (user.getId().equals(curUser.getId())) {
             httpServletRequest.logout();
+        }
         return "redirect:/user";
     }
 }
