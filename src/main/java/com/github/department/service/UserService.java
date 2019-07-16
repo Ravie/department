@@ -11,8 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.UUID;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -21,6 +23,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    HttpServletRequest httpServletRequest;
 
     @Autowired
     private MailSender mailSender;
@@ -43,6 +48,12 @@ public class UserService implements UserDetailsService {
 
         userRepo.save(user);
 
+        sendActivationCode(user);
+
+        return true;
+    }
+
+    private void sendActivationCode(User user) {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
                     "Привет, %s\n" +
@@ -52,8 +63,6 @@ public class UserService implements UserDetailsService {
             );
             mailSender.send(user.getEmail(), "Активация аккаунта", message);
         }
-
-        return true;
     }
 
     public boolean activateUser(String code) {
@@ -68,5 +77,56 @@ public class UserService implements UserDetailsService {
         userRepo.save(user);
 
         return true;
+    }
+
+    public List<User> loadAllUsers() {
+        return userRepo.findAll();
+    }
+
+    public void updateUserSettings(User curUser, User user, String username, Map<String, String> form) throws ServletException {
+        user.setUsername(username);
+
+        Set<String> roles = Arrays.stream(Role.values())
+                .map(Role::name)
+                .collect(Collectors.toSet());
+
+        user.getAccessLevel().clear();
+
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
+                user.getAccessLevel().add(Role.valueOf(key));
+            }
+        }
+
+        userRepo.save(user);
+
+        if (user.getId().equals(curUser.getId())) {
+            httpServletRequest.logout();
+        }
+    }
+
+    public void updateProfile(User user, String newPassword, String newEmail) {
+        String userEmail = user.getEmail();
+
+        boolean isEmailUpdated = (newEmail != null && !newEmail.equals(userEmail)) ||
+                (userEmail != null && !userEmail.equals(newEmail));
+
+        if (isEmailUpdated) {
+            user.setEmail(newEmail);
+
+            if (!StringUtils.isEmpty(newEmail)) {
+                user.setActivationCode(UUID.randomUUID().toString());
+            }
+        }
+
+        if (!StringUtils.isEmpty(newPassword)) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
+
+        userRepo.save(user);
+
+        if (isEmailUpdated) {
+            sendActivationCode(user);
+        }
     }
 }

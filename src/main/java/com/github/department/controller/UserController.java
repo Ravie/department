@@ -2,7 +2,7 @@ package com.github.department.controller;
 
 import com.github.department.entity.Role;
 import com.github.department.entity.User;
-import com.github.department.repo.UserRepo;
+import com.github.department.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,61 +11,66 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class UserController {
     @Autowired
-    UserRepo userRepo;
+    UserService userService;
 
-    @Autowired
-    HttpServletRequest httpServletRequest;
-
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping
     public String userList(Model model) {
-        model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("users", userService.loadAllUsers());
+
         return "userList";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("{user}")
-    public String userEditorForm(@PathVariable User user, Model model) {
+    public String userEditorForm(@PathVariable User user, Model model, @RequestParam(required = false) Boolean success) {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
+        if (success != null && success) {
+            model.addAttribute("success", "Данные успешно обновлены!");
+        }
         return "userEditor";
     }
 
-    @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("{user}")
     public String saveChanges(@AuthenticationPrincipal User curUser,
                               @RequestParam("userId") User user,
                               @RequestParam String username,
-                              @RequestParam Map<String, String> form,
-                              Model model
+                              @RequestParam Map<String, String> form
     ) throws ServletException {
-        user.setUsername(username);
+        userService.updateUserSettings(curUser, user, username, form);
 
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
+        return "redirect:/user/{user}?success=true";
+    }
 
-        user.getAccessLevel().clear();
-
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getAccessLevel().add(Role.valueOf(key));
-            }
+    @GetMapping("profile")
+    public String userProfile(Model model,
+                              @AuthenticationPrincipal User user,
+                              @RequestParam(required = false) Boolean success) {
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+        if (success != null && success) {
+            model.addAttribute("success", "Данные успешно обновлены!");
         }
 
-        userRepo.save(user);
+        return "profile";
+    }
 
-        if (user.getId().equals(curUser.getId())) {
-            httpServletRequest.logout();
-        }
-        return "redirect:/user";
+    @PostMapping("profile")
+    public String updateUserProfile(
+            @AuthenticationPrincipal User user,
+            @RequestParam(required = false) String password,
+            @RequestParam(required = false) String email
+    ) {
+        userService.updateProfile(user, password, email);
+
+        return "redirect:/user/profile?success=true";
     }
 }

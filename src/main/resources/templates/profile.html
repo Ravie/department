@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="~{fragments/bootstrap :: header}"></div>
+    <script src="../static/sweetalert2.all.min.js" type="text/javascript"></script>
+    <script src="../static/index.js" type="text/javascript"></script>
+    <title th:inline="text">[[${#httpServletRequest.remoteUser}]]</title>
+</head>
+<body>
+<div th:insert="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <form class="col sm-6 mt-5" method="post" th:action="@{/user/profile}">
+        <div th:if="${success != null}">
+            <div class="alert alert-success" role="alert" th:inline="text">
+                [[${success}]]
+            </div>
+        </div>
+        <h2 class="mr-sm-2" th:inline="text">[[${#httpServletRequest.remoteUser}]]</h2>
+        <div class="form-group">
+            <label for="email">Новый адрес электронной почты:</label>
+            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" th:value="${email}">
+        </div>
+        <div class="form-group">
+            <label for="password">Новый пароль:</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <button type="submit" class="btn btn-sm btn-outline-success">Сохранить изменения</button>
+    </form>
+</div>
+<div th:insert="~{fragments/bootstrap :: jscripts}"></div>
+</body>
+</html>
