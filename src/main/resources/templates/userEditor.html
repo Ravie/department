@@ -9,19 +9,19 @@
 <body>
 <div th:insert="~{fragments/navbar :: navbar}"></div>
 <div class="container">
-<form class="mt-5" method="POST" onsubmit="return checkUserForm();" th:action="@{/user}">
-    <label for="username" class="mr-1">Введите новое имя пользователя:</label>
-        <input class="mr-2" id="username" name="username" th:value="${user.username}" type="text" required>
-    <div th:each="role:${roles}">
-        <label>
-            <input th:checked="${#lists.contains(user.accessLevel, role)}" th:name="${role}" type="checkbox">
-            <td th:utext="${role}"/>
-        </label>
-    </div>
-    <input id="userId" name="userId" th:value="${user.id}" type="hidden">
-    <input id="curUserId" name="curUserId" th:value="${#authentication.principal.getId()}" type="hidden">
-    <button type="submit" class="btn btn-outline-success">Сохранить изменения</button>
-</form>
+    <form class="mt-5" method="POST" onsubmit="return checkUserForm();" th:action="@{/user}">
+        <label class="mr-1" for="username">Введите новое имя пользователя:</label>
+        <input class="mr-2" id="username" name="username" required th:value="${user.username}" type="text">
+        <div th:each="role:${roles}">
+            <label>
+                <input th:checked="${#lists.contains(user.accessLevel, role)}" th:name="${role}" type="checkbox">
+                <td th:utext="${role}"/>
+            </label>
+        </div>
+        <input id="userId" name="userId" th:value="${user.id}" type="hidden">
+        <input id="curUserId" name="curUserId" th:value="${#authentication.principal.getId()}" type="hidden">
+        <button class="btn btn-outline-success" type="submit">Сохранить изменения</button>
+    </form>
 </div>
 <div th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </body>

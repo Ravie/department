@@ -10,19 +10,22 @@
 <body>
 <div th:insert="~{fragments/navbar :: navbar}"></div>
 <div class="container">
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    <form class="mt-5" method="post" onsubmit="return checkEmployeeForm();" th:action="@{/employee}">
-        <input name="employeeId" th:value="${employee.id}" type="hidden">
-        <label for="name" class="mr-1">ФИО:</label><input class="mr-2" id="name" name="name" placeholder="ФИО" th:value="${employee.name}" type="text" required/>
-        <label for="depId" class="mr-1">Отдел:</label><select class="mr-2" id="depId" name="depId">
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <form class="mt-5" method="post" onsubmit="return checkEmployeeForm();" th:action="@{/employee}">
+            <input name="employeeId" th:value="${employee.id}" type="hidden">
+            <label class="mr-1" for="name">ФИО:</label><input class="mr-2" id="name" name="name" placeholder="ФИО"
+                                                              required th:value="${employee.name}" type="text"/>
+            <label class="mr-1" for="depId">Отдел:</label><select class="mr-2" id="depId" name="depId">
             <option th:each="dep : ${departments}" th:selected="${dep==employee.department}" th:text="${dep.getName()}"
                     th:value="${dep.getId()}"></option>
         </select>
-        <label for="salary" class="mr-1">Зарплата:</label><input class="mr-2" id="salary" min="11280.00" name="salary" placeholder="Зарплата" step="0.01" th:value="${employee.salary}"
-                                           type="number" required/>
-        <button type="submit" class="btn btn-outline-success">Сохранить изменения</button>
-    </form>
-</div>
+            <label class="mr-1" for="salary">Зарплата:</label><input class="mr-2" id="salary" min="11280.00"
+                                                                     name="salary" placeholder="Зарплата" required
+                                                                     step="0.01"
+                                                                     th:value="${employee.salary}" type="number"/>
+            <button class="btn btn-outline-success" type="submit">Сохранить изменения</button>
+        </form>
+    </div>
 </div>
 <div th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </body>

@@ -7,24 +7,25 @@
 <body>
 <div th:insert="~{fragments/navbar :: navbar}"></div>
 <div class="container">
-<table class="table table-bordered table-hover table-sm mt-5">
-    <thead class="thead-dark">
-    <tr>
-        <th>Логин</th>
-        <th>Уровни доступа</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user: ${users}">
-        <td th:utext="${user.username}"/>
-        <td>
-            <div th:text="${#strings.setJoin(user.accessLevel, ', ')}"/>
-        </td>
-        <td class="fit-column-by-content"><a class="btn btn-block btn-outline-warning" th:href="@{|/user/${user.id}|}">Изменить</a></td>
-    </tr>
-    </tbody>
-</table>
+    <table class="table table-bordered table-hover table-sm mt-5">
+        <thead class="thead-dark">
+        <tr>
+            <th>Логин</th>
+            <th>Уровни доступа</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user: ${users}">
+            <td th:utext="${user.username}"/>
+            <td>
+                <div th:text="${#strings.setJoin(user.accessLevel, ', ')}"/>
+            </td>
+            <td class="fit-column-by-content"><a class="btn btn-block btn-outline-warning"
+                                                 th:href="@{|/user/${user.id}|}">Изменить</a></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </body>

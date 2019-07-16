@@ -9,14 +9,14 @@
 <div class="container mt-5">
     <div th:if="${param.error}">
         <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>
             <span class="sr-only">Error:</span>
             Неверное имя пользователя или пароль.
         </div>
     </div>
     <div th:if="${param.logout}">
         <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>
             <span class="sr-only">Error:</span>
             Вы вышли из аккаунта.
         </div>
@@ -24,7 +24,7 @@
     <h3>Вход:</h3>
     <form method="post" th:action="@{/login}">
         <div th:insert="~{fragments/auth :: auth}"></div>
-        <div><input type="submit" class="btn btn-success" value="Войти"/></div>
+        <div><input class="btn btn-success" type="submit" value="Войти"/></div>
     </form>
 </div>
 </body>

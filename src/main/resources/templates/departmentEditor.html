@@ -9,12 +9,13 @@
 <body>
 <div th:insert="~{fragments/navbar :: navbar}"></div>
 <div class="container">
-<form class="mt-5" method="POST" th:object="${currentDep}" onsubmit="return checkDepartmentForm();" th:action="@{/department/edit/}">
-    <label for="name" class="mr-1">Введите новое имя отдела:</label>
-        <input class="mr-2" id="name" name="depName" th:field="*{name}" type="text" required>
-    <input name="depId" th:field="*{id}" type="hidden">
-    <button type="submit" class="btn btn-outline-success">Сохранить изменения</button>
-</form>
+    <form class="mt-5" method="POST" onsubmit="return checkDepartmentForm();" th:action="@{/department/edit/}"
+          th:object="${currentDep}">
+        <label class="mr-1" for="name">Введите новое имя отдела:</label>
+        <input class="mr-2" id="name" name="depName" required th:field="*{name}" type="text">
+        <input name="depId" th:field="*{id}" type="hidden">
+        <button class="btn btn-outline-success" type="submit">Сохранить изменения</button>
+    </form>
 </div>
 <div class="container" th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </body>

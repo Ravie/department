@@ -10,43 +10,51 @@
 <body>
 <div th:insert="~{fragments/navbar :: navbar}"></div>
 <div class="container">
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    <h5 class="mt-2">Добавление нового отдела:</h5>
-    <form method="post" onsubmit="return checkDepartmentForm();" th:action="@{/department}">
-        <label for="name" class="mr-1">Отдел:</label><input class="mr-2" id="name" name="name" placeholder="Отдел" type="text" required/>
-        <button type="submit" class="btn btn-outline-success">Добавить отдел</button>
-    </form>
-</div>
-    <a class="btn btn-primary my-2" data-toggle="collapse" href="#searchDepartment" role="button" aria-expanded="false" aria-controls="searchDepartment">
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <h5 class="mt-2">Добавление нового отдела:</h5>
+        <form method="post" onsubmit="return checkDepartmentForm();" th:action="@{/department}">
+            <label class="mr-1" for="name">Отдел:</label><input class="mr-2" id="name" name="name" placeholder="Отдел"
+                                                                required type="text"/>
+            <button class="btn btn-outline-success" type="submit">Добавить отдел</button>
+        </form>
+    </div>
+    <a aria-controls="searchDepartment" aria-expanded="false" class="btn btn-primary my-2" data-toggle="collapse" href="#searchDepartment"
+       role="button">
         <div>Поиск</div>
     </a>
     <div class="collapse" id="searchDepartment">
-<form method="get" th:action="@{/department}">
-    <div>
-        <label for="searchName" class="mr-1">Отдел:</label><input class="mr-2" id="searchName" name="name" placeholder="Отдел" th:value="${name}" type="text"/>
-        <button id="filter" type="submit" class="btn btn-outline-success">Найти</button>
-    </div>
-</form>
+        <form method="get" th:action="@{/department}">
+            <div>
+                <label class="mr-1" for="searchName">Отдел:</label><input class="mr-2" id="searchName" name="name"
+                                                                          placeholder="Отдел" th:value="${name}"
+                                                                          type="text"/>
+                <button class="btn btn-outline-success" id="filter" type="submit">Найти</button>
+            </div>
+        </form>
     </div>
     <div class="mt-4"><h5>Список отделов:</h5></div>
-<table class="table table-bordered table-hover table-sm table-fit">
-    <thead class="thead-dark">
-    <tr>
-        <th class="fit-column-by-content">ID отдела</th>
-        <th>Название отдела</th>
-        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="department: ${departments}">
-        <td th:utext="${department.id}"></td>
-        <td th:utext="${department.name}"></td>
-        <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-block btn-outline-warning" th:href="@{|/department/edit/${department.id}|}">Изменить</a></td>
-        <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-block btn-outline-danger" th:href="@{|/department/delete/${department.id}|}">Удалить</a></td>
-    </tr>
-    </tbody>
-</table>
+    <table class="table table-bordered table-hover table-sm table-fit">
+        <thead class="thead-dark">
+        <tr>
+            <th class="fit-column-by-content">ID отдела</th>
+            <th>Название отдела</th>
+            <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+            <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="department: ${departments}">
+            <td th:utext="${department.id}"></td>
+            <td th:utext="${department.name}"></td>
+            <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
+                    class="btn btn-block btn-outline-warning"
+                    th:href="@{|/department/edit/${department.id}|}">Изменить</a></td>
+            <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
+                    class="btn btn-block btn-outline-danger"
+                    th:href="@{|/department/delete/${department.id}|}">Удалить</a></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </body>
