@@ -27,11 +27,14 @@
     <div>Поиск:</div>
     <div>
         <label>по имени:<input name="name" placeholder="ФИО" th:value="${name}" type="text"/></label>
-        <label>по отделу:<input name="depName" placeholder="Отдел" th:value="${depName}"
-                                type="text"/></label>
         <label for="min">по мин ЗП:</label><input id="min" min="11280.00" name="minSalary" placeholder="Мин" step="0.01"
                                                   th:value="${minSalary}" type="number"/>
         <label for="max">по макс ЗП:</label><input id="max" min="11280.00" name="maxSalary" placeholder="Макс" step="0.01"
+        <label for="searchDepId" class="mr-1">Отдел:</label>
+            <select class="mr-2" id="searchDepId" name="searchDepId">
+                <option></option>
+                <option th:each="dep : ${departments}" th:text="${dep.getName()}" th:value="${dep.getId()}"></option>
+            </select>
                                                    th:value="${maxSalary}" type="number"/>
         <button id="filter" type="submit">Найти</button>
     </div>
