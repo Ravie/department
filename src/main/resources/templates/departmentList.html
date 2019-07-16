@@ -17,13 +17,17 @@
         <button type="submit" class="btn btn-outline-success">Добавить отдел</button>
     </form>
 </div>
+    <a class="btn btn-primary my-2" data-toggle="collapse" href="#searchDepartment" role="button" aria-expanded="false" aria-controls="searchDepartment">
+        <div>Поиск</div>
+    </a>
+    <div class="collapse" id="searchDepartment">
 <form method="get" th:action="@{/department}">
-    <div class="mt-4"><h5>Поиск:</h5></div>
     <div>
         <label for="searchName" class="mr-1">Отдел:</label><input class="mr-2" id="searchName" name="name" placeholder="Отдел" th:value="${name}" type="text"/>
         <button id="filter" type="submit" class="btn btn-outline-success">Найти</button>
     </div>
 </form>
+    </div>
     <div class="mt-4"><h5>Список отделов:</h5></div>
 <table class="table table-bordered table-hover table-sm table-fit">
     <thead class="thead-dark">
