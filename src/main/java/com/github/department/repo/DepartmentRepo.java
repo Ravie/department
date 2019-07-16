@@ -7,6 +7,6 @@ import java.util.List;
 
 // CRUD refers Create, Read, Update, Delete
 
-public interface DepartmentRepo extends CrudRepository<Department, Integer> {
+public interface DepartmentRepo extends CrudRepository<Department, Long> {
     List<Department> findByName(String name);
 }

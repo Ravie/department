@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     private User author;
@@ -24,11 +24,11 @@ public class Department {
         return author != null ? author.getUsername() : "<none>";
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

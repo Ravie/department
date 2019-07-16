@@ -31,7 +31,7 @@ public class MainController {
 
     @GetMapping("/index")
     public String index(@RequestParam(required = false, defaultValue = "") String name,
-                        @RequestParam(required = false) Integer searchDepId,
+                        @RequestParam(required = false) Long searchDepId,
                         @RequestParam(required = false, defaultValue = "") Double minSalary,
                         @RequestParam(required = false, defaultValue = "") Double maxSalary,
                         Model model
@@ -83,7 +83,7 @@ public class MainController {
     }
 
     @PostMapping("/index")
-    public String addEmployee(@AuthenticationPrincipal User user, @RequestParam String name, @RequestParam Integer depId, @RequestParam Double salary, Model model) {
+    public String addEmployee(@AuthenticationPrincipal User user, @RequestParam String name, @RequestParam Long depId, @RequestParam Double salary, Model model) {
         List<Employee> employeeName = employeeRepo.findByName(name);
 
         if (employeeName.isEmpty()) {
