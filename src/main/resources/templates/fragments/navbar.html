@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Navbar</title>
+</head>
+<body>
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Учет сотрудников</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul sec:authorize="not isAnonymous()" class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Меню
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a th:if="${#httpServletRequest.requestURI != '/department'}" class="dropdown-item"
+                           href="/department">Отделы</a>
+                        <a th:if="${#httpServletRequest.requestURI != '/index'}" class="dropdown-item"
+                           href="/index">Сотрудники</a>
+                        <div sec:authorize="hasRole('ROLE_ADMIN')"
+                             th:if="${#httpServletRequest.requestURI != '/user'}">
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/user">Администрирование</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <form sec:authorize="not isAnonymous()" class="form-inline my-2 my-lg-0" method="post"
+                  th:action="@{/logout}">
+                <h6 class="form-control mr-sm-2 mt-2" th:inline="text">[[${#httpServletRequest.remoteUser}]]</h6>
+                <button class="btn btn-outline-danger mr-sm-2" type="submit">Выйти</button>
+            </form>
+        </div>
+
+        <form sec:authorize="isAnonymous()" class="form-inline my-2 my-lg-0">
+            <a class="btn btn-primary mr-sm-2" th:if="${#httpServletRequest.requestURI != '/register'}"
+               href="/register">Регистрация</a>
+            <a class="btn btn-success mr-sm-2" th:if="${#httpServletRequest.requestURI != '/login'}"
+               href="/login">Вход</a>
+        </form>
+    </nav>
+</div>
+</body>
+</html>

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <div th:insert="~{fragments/bootstrap :: header}"></div>
     <script src="../static/sweetalert2.all.min.js" type="text/javascript"></script>
     <script src="../static/index.js" type="text/javascript"></script>
     <title th:inline="text">[[${user.username}]]</title>
 </head>
 <body>
-<div th:insert="~{fragments/helloUser :: hello}"></div>
-<form method="POST" onsubmit="return checkUserForm();" th:action="@{/user}">
-    <label>Введите новое имя пользователя:
-        <input id="username" name="username" th:value="${user.username}" type="text" required>
-    </label>
+<div th:insert="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+<form class="mt-5" method="POST" onsubmit="return checkUserForm();" th:action="@{/user}">
+    <label for="username" class="mr-1">Введите новое имя пользователя:</label>
+        <input class="mr-2" id="username" name="username" th:value="${user.username}" type="text" required>
     <div th:each="role:${roles}">
         <label>
             <input th:checked="${#lists.contains(user.accessLevel, role)}" th:name="${role}" type="checkbox">
@@ -20,7 +20,9 @@
     </div>
     <input id="userId" name="userId" th:value="${user.id}" type="hidden">
     <input id="curUserId" name="curUserId" th:value="${#authentication.principal.getId()}" type="hidden">
-    <button type="submit">Сохранить изменения</button>
+    <button type="submit" class="btn btn-outline-success">Сохранить изменения</button>
 </form>
+</div>
+<div th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </body>
 </html>

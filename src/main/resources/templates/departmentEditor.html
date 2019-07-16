@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <div th:insert="~{fragments/bootstrap :: header}"></div>
     <script src="../../static/sweetalert2.all.min.js" type="text/javascript"></script>
     <script src="../../static/index.js" type="text/javascript"></script>
     <title th:inline="text">[[${currentDep.name}]]</title>
 </head>
 <body>
-<div th:insert="~{fragments/helloUser :: hello}"></div>
-<form method="POST" th:object="${currentDep}" onsubmit="return checkDepartmentForm();" th:action="@{/department/edit/}">
-    <label>Введите новое имя отдела:
-        <input id="name" name="depName" th:field="*{name}" type="text" required>
-    </label>
+<div th:insert="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+<form class="mt-5" method="POST" th:object="${currentDep}" onsubmit="return checkDepartmentForm();" th:action="@{/department/edit/}">
+    <label for="name" class="mr-1">Введите новое имя отдела:</label>
+        <input class="mr-2" id="name" name="depName" th:field="*{name}" type="text" required>
     <input name="depId" th:field="*{id}" type="hidden">
-    <button type="submit">Сохранить изменения</button>
+    <button type="submit" class="btn btn-outline-success">Сохранить изменения</button>
 </form>
+</div>
+<div class="container" th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </body>
 </html>

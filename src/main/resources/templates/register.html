@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <div th:insert="~{fragments/bootstrap :: header}"></div>
     <title>Регистрация</title>
 </head>
 <body>
-Регистрация нового пользователя:
-<form method="post" th:action="@{/register}">
-    <div><label> Имя пользователя: <input name="username" type="text" required/> </label></div>
-    <div><label> Пароль: <input name="password" type="password" required/> </label></div>
-    <div><input type="submit" value="ОК"/></div>
-</form>
+<div th:insert="~{fragments/navbar :: navbar}"></div>
+<div class="container mt-5">
+    <h3>Регистрация нового пользователя:</h3>
+    <form method="post" th:action="@{/register}">
+        <div th:insert="~{fragments/auth :: auth}"></div>
+        <div><input type="submit" class="btn btn-success" value="ОК"/></div>
+    </form>
+</div>
 </body>
 </html>
