@@ -25,7 +25,7 @@
             <label class="mr-1" for="salary">Зарплата:</label><input class="mr-2" id="salary" min="11280.00"
                                                                      name="salary" placeholder="Зарплата" required
                                                                      step="0.01" type="number"/>
-            <button class="btn btn-outline-success" type="submit">Добавить сотрудника</button>
+            <button class="btn btn-sm btn-outline-success mb-1" type="submit">Добавить сотрудника</button>
         </form>
     </div>
     <a aria-controls="searchEmployee" aria-expanded="false" class="btn btn-primary my-2" data-toggle="collapse" href="#searchEmployee"
@@ -50,7 +50,7 @@
                 <label class="mr-1" for="max">Макс ЗП:</label><input class="mr-2" id="max" min="11280.00"
                                                                      name="maxSalary" placeholder="Макс" step="0.01"
                                                                      th:value="${maxSalary}" type="number"/>
-                <button class="btn btn-outline-success" id="filter" type="submit">Найти</button>
+                <button class="btn btn-sm btn-outline-success mb-1" id="filter" type="submit">Найти</button>
             </div>
         </form>
     </div>
@@ -73,10 +73,10 @@
             <td th:utext="${employee.department.getName()}"></td>
             <td th:utext="${employee.getFormattedSalary()}"></td>
             <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
-                    class="btn btn-block btn-outline-warning" th:href="@{|/employee/edit/${employee.id}|}">Изменить</a>
+                    class="btn btn-sm btn-block btn-outline-warning" th:href="@{|/employee/edit/${employee.id}|}">Изменить</a>
             </td>
             <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
-                    class="btn btn-block btn-outline-danger" th:href="@{|/employee/delete/${employee.id}|}">Удалить</a>
+                    class="btn btn-sm btn-block btn-outline-danger" th:href="@{|/employee/delete/${employee.id}|}">Удалить</a>
             </td>
         </tr>
         </tbody>

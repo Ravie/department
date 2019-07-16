@@ -21,7 +21,7 @@
             <td>
                 <div th:text="${#strings.setJoin(user.accessLevel, ', ')}"/>
             </td>
-            <td class="fit-column-by-content"><a class="btn btn-block btn-outline-warning"
+            <td class="fit-column-by-content"><a class="btn btn-sm btn-block btn-outline-warning"
                                                  th:href="@{|/user/${user.id}|}">Изменить</a></td>
         </tr>
         </tbody>
