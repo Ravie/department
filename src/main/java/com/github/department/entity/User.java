@@ -20,6 +20,8 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> accessLevel;
+    private String email;
+    private String activationCode;
 
     public Long getId() {
         return id;
@@ -84,5 +86,21 @@ public class User implements UserDetails {
 
     public void setAccessLevel(Set<Role> accessLevel) {
         this.accessLevel = accessLevel;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 }

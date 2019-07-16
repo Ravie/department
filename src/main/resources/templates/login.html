@@ -9,16 +9,22 @@
 <div class="container mt-5">
     <div th:if="${param.error}">
         <div class="alert alert-danger" role="alert">
-            <span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>
-            <span class="sr-only">Error:</span>
             Неверное имя пользователя или пароль.
         </div>
     </div>
     <div th:if="${param.logout}">
         <div class="alert alert-danger" role="alert">
-            <span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>
-            <span class="sr-only">Error:</span>
             Вы вышли из аккаунта.
+        </div>
+    </div>
+    <div th:if="${success != null}">
+        <div class="alert alert-success" role="alert" th:inline="text">
+            [[${success}]]
+        </div>
+    </div>
+    <div th:if="${failure != null}">
+        <div class="alert alert-danger" role="alert" th:inline="text">
+            [[${failure}]]
         </div>
     </div>
     <h3>Вход:</h3>

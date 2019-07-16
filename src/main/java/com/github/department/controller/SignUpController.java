@@ -1,24 +1,18 @@
 package com.github.department.controller;
 
-import com.github.department.entity.Role;
 import com.github.department.entity.User;
-import com.github.department.repo.UserRepo;
+import com.github.department.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.Collections;
 
 @Controller
 public class SignUpController {
     @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @GetMapping("/register")
     public String welcomePage() {
@@ -27,18 +21,24 @@ public class SignUpController {
 
     @PostMapping("/register")
     public String signUp(User user, Model model) {
-        User userFromDb = userRepo.findByUsername(user.getUsername());
-
-        if (userFromDb != null) {
-            model.addAttribute("message", "User Exists!");
+        if (!userService.addUser(user)) {
+            model.addAttribute("message", "Такой аккаунт уже зарегистрирован!");
             return "register";
         }
 
-        user.setActive(true);
-        user.setAccessLevel(Collections.singleton(Role.USER));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepo.save(user);
-
         return "redirect:/login";
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activateAccount(@PathVariable String code, Model model) {
+        boolean isActivated = userService.activateUser(code);
+
+        if (isActivated) {
+            model.addAttribute("success", "Аккаунт успешно активирован!");
+        } else {
+            model.addAttribute("failure", "Аккаунт уже активирован!");
+        }
+
+        return "login";
     }
 }

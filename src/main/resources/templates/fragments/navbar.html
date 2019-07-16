@@ -9,43 +9,37 @@
 <div th:fragment="navbar">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">Учет сотрудников</a>
-        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                class="navbar-toggler"
                 data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto" sec:authorize="not isAnonymous()">
-                <li class="nav-item dropdown">
-                    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-                       href="#"
-                       id="navbarDropdown" role="button">
-                        Меню
-                    </a>
-                    <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                        <a class="dropdown-item" href="/department"
-                           th:if="${#httpServletRequest.requestURI != '/department'}">Отделы</a>
-                        <a class="dropdown-item" href="/index"
-                           th:if="${#httpServletRequest.requestURI != '/index'}">Сотрудники</a>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')"
-                             th:if="${#httpServletRequest.requestURI != '/user'}">
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/user">Администрирование</a>
-                        </div>
-                    </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" sec:authorize="not isAnonymous()">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/department"
+                       th:if="${#httpServletRequest.requestURI != '/department'}">Отделы</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/index"
+                       th:if="${#httpServletRequest.requestURI != '/index'}">Сотрудники</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/user" sec:authorize="hasRole('ROLE_ADMIN')"
+                       th:if="${#httpServletRequest.requestURI != '/user'}">Администрирование</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0" method="post" sec:authorize="not isAnonymous()"
-                  th:action="@{/logout}">
+            <form class="form-inline my-2 my-lg-0" method="post" th:action="@{/logout}">
                 <h6 class="form-control mr-sm-2 mt-2" th:inline="text">[[${#httpServletRequest.remoteUser}]]</h6>
                 <button class="btn btn-outline-danger mr-sm-2" type="submit">Выйти</button>
             </form>
         </div>
 
-        <form class="form-inline my-2 my-lg-0" sec:authorize="isAnonymous()">
-            <a class="btn btn-primary mr-sm-2" href="/register"
+        <form class="form-inline" sec:authorize="isAnonymous()">
+            <a class="btn btn-primary mr-sm-2 my-2 my-sm-0" href="/register"
                th:if="${#httpServletRequest.requestURI != '/register'}">Регистрация</a>
-            <a class="btn btn-success mr-sm-2" href="/login"
+            <a class="btn btn-success mr-sm-2 my-2 my-sm-0" href="/login"
                th:if="${#httpServletRequest.requestURI != '/login'}">Вход</a>
         </form>
     </nav>
