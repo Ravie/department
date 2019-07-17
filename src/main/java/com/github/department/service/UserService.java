@@ -4,6 +4,7 @@ import com.github.department.entity.Role;
 import com.github.department.entity.User;
 import com.github.department.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,6 +30,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private MailSender mailSender;
+
+    @Value("${hostname}")
+    private String hostname;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -58,8 +62,8 @@ public class UserService implements UserDetailsService {
             String message = String.format(
                     "Привет, %s\n" +
                             "Для активации аккаунта перейдите по ссылке:\n" +
-                            "http://localhost:8080/activate/%s",
-                    user.getUsername(), user.getActivationCode()
+                            "http://%s/activate/%s",
+                    user.getUsername(), hostname, user.getActivationCode()
             );
             mailSender.send(user.getEmail(), "Активация аккаунта", message);
         }
