@@ -22,9 +22,6 @@ public class User implements UserDetails {
     @NotBlank(message = "Пароль не может быть пустым")
     @Length(max = 255, message= "Пароль превышает допустимую длину")
     private String password;
-    @Transient
-    @Length(max = 255, message= "Пароль превышает допустимую длину")
-    private String passwordConfirm;
     private Boolean active;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -82,14 +79,6 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
     }
 
     public Boolean getActive() {

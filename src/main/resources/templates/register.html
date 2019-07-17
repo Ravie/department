@@ -3,6 +3,7 @@
 <head>
     <div th:insert="~{fragments/bootstrap :: header}"></div>
     <title>Регистрация</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 <div th:insert="~{fragments/navbar :: navbar}"></div>
@@ -39,8 +40,8 @@
             <div class="col-sm-6">
                 <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm"
                        th:classappend="${passwordError != null} ? 'is-invalid' : ''"/>
-                <div class="invalid-feedback" th:if="${passwordError != null}" th:inline="text">
-                    [[${passwordError}]]
+                <div class="invalid-feedback" th:if="${passwordConfirmError != null}" th:inline="text">
+                    [[${passwordConfirmError}]]
                 </div>
             </div>
         </div>
@@ -54,7 +55,13 @@
                 </div>
             </div>
         </div>
-        <div><input class="btn btn-success" type="submit" value="ОК"/></div>
+        <div>
+            <div class="g-recaptcha" data-sitekey="6LeHKK4UAAAAAClZotFmqsCBjhCp7JjwOxKw3qay"></div>
+            <div class="alert alert-danger col-sm-3 mt-1" role="alert" th:if="${captchaError != null}" th:inline="text">
+                [[${captchaError}]]
+            </div>
+        </div>
+        <div><input class="btn btn-success mt-3" type="submit" value="Зарегистрироваться"/></div>
     </form>
 </div>
 </body>
