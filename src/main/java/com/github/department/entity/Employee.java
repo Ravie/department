@@ -1,6 +1,10 @@
 package com.github.department.entity;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -8,9 +12,13 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank(message = "Имя не может быть пустым")
+    @Length(max = 255, message= "Имя превышает допустимую длину")
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull(message = "Введите отдел")
     private Department department;
+    @NotNull(message = "Введите зарплату")
     private Double salary;
     @ManyToOne(fetch = FetchType.EAGER)
     private User author;

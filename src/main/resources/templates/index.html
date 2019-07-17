@@ -14,74 +14,107 @@
 <div class="container">
     <div sec:authorize="hasRole('ROLE_ADMIN')">
         <h5 class="mt-2">Добавление нового сотрудника:</h5>
-        <form method="post" onsubmit="return checkEmployeeForm();" th:action="@{/index}">
-            <label class="mr-1" for="name">ФИО:</label><input class="mr-2" id="name" name="name" placeholder="ФИО"
-                                                              required type="text"/>
-            <label class="mr-1" for="depId">Отдел:</label>
-            <select class="mr-2" id="depId" name="depId" required>
-                <option></option>
-                <option th:each="dep : ${departments}" th:text="${dep.getName()}" th:value="${dep.getId()}"></option>
-            </select>
-            <label class="mr-1" for="salary">Зарплата:</label><input class="mr-2" id="salary" min="11280.00"
-                                                                     name="salary" placeholder="Зарплата" required
-                                                                     step="0.01" type="number"/>
-            <button class="btn btn-sm btn-outline-success mb-1" type="submit">Добавить сотрудника</button>
-        </form>
-    </div>
-    <a aria-controls="searchEmployee" aria-expanded="false" class="btn btn-primary my-2" data-toggle="collapse" href="#searchEmployee"
-       role="button">
-        <div>Поиск</div>
-    </a>
-    <div class="collapse" id="searchEmployee">
-        <form method="get" onsubmit="return minSalaryLessThanMax();" th:action="@{/index}">
-            <div class="form-column">
-                <label class="mr-1" for="searchName">ФИО:</label><input class="mr-2" id="searchName" name="name"
-                                                                        placeholder="ФИО" th:value="${name}"
-                                                                        type="text"/>
-                <label class="mr-1" for="searchDepId">Отдел:</label>
-                <select class="mr-2" id="searchDepId" name="searchDepId">
-                    <option></option>
-                    <option th:each="dep : ${departments}" th:text="${dep.getName()}"
-                            th:value="${dep.getId()}"></option>
-                </select>
-                <label class="mr-1" for="min">Мин ЗП:</label><input class="mr-2" id="min" min="11280.00"
-                                                                    name="minSalary" placeholder="Мин" step="0.01"
-                                                                    th:value="${minSalary}" type="number"/>
-                <label class="mr-1" for="max">Макс ЗП:</label><input class="mr-2" id="max" min="11280.00"
-                                                                     name="maxSalary" placeholder="Макс" step="0.01"
-                                                                     th:value="${maxSalary}" type="number"/>
-                <button class="btn btn-sm btn-outline-success mb-1" id="filter" type="submit">Найти</button>
+        <form method="post" th:action="@{/index}">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="name">ФИО:</label>
+                <div class="col-sm-6"><input class="form-control mr-2" id="name" name="name"
+                                             placeholder="ФИО" type="text"
+                                             th:classappend="${nameError != null} ? 'is-invalid' : ''"
+                                             th:value="${employee?.getName()}"/>
+                <div class="invalid-feedback" th:if="${nameError != null}" th:inline="text">
+                    [[${nameError}]]
+                </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="depId">Отдел:</label>
+                <div class="col-sm-6">
+                    <select class="custom-select form-control mr-2" id="depId" name="department"
+                            th:classappend="${departmentError != null} ? 'is-invalid' : ''">
+                        <option></option>
+                        <option th:each="dep : ${departments}" th:text="${dep.getName()}"
+                                th:value="${dep.getId()}" th:selected="${employee?.getDepartment()}"></option>
+                    </select>
+                <div class="invalid-feedback" th:if="${departmentError != null}" th:inline="text">
+                    [[${departmentError}]]
+                </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="salary">Зарплата:</label>
+                <div class="col-sm-6">
+                    <input class="form-control mr-2" id="salary"
+                           min="11280.00"
+                           name="salary" placeholder="Зарплата"
+                           th:classappend="${salaryError != null} ? 'is-invalid' : ''"
+                           th:value="${employee?.getSalary()}"
+                           step="0.01" type="number"/>
+                <div class="invalid-feedback" th:if="${salaryError != null}" th:inline="text">
+                    [[${salaryError}]]
+                </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-sm btn-outline-success mb-1" type="submit">Добавить сотрудника</button>
             </div>
         </form>
+        <a aria-controls="searchEmployee" aria-expanded="false" class="btn btn-primary my-2" data-toggle="collapse"
+           href="#searchEmployee"
+           role="button">
+            <div>Поиск</div>
+        </a>
+        <div class="collapse" id="searchEmployee">
+            <form method="get" onsubmit="return minSalaryLessThanMax();" th:action="@{/index}">
+                <div class="form-column">
+                    <label class="mr-1" for="searchName">ФИО:</label><input class="mr-2" id="searchName" name="name"
+                                                                            placeholder="ФИО" th:value="${name}"
+                                                                            type="text"/>
+                    <label class="mr-1" for="searchDepId">Отдел:</label>
+                    <select class="mr-2" id="searchDepId" name="searchDepId">
+                        <option></option>
+                        <option th:each="dep : ${departments}" th:text="${dep.getName()}"
+                                th:value="${dep.getId()}"></option>
+                    </select>
+                    <label class="mr-1" for="min">Мин ЗП:</label><input class="mr-2" id="min" min="11280.00"
+                                                                        name="minSalary" placeholder="Мин" step="0.01"
+                                                                        th:value="${minSalary}" type="number"/>
+                    <label class="mr-1" for="max">Макс ЗП:</label><input class="mr-2" id="max" min="11280.00"
+                                                                         name="maxSalary" placeholder="Макс" step="0.01"
+                                                                         th:value="${maxSalary}" type="number"/>
+                    <button class="btn btn-sm btn-outline-success mb-1" id="filter" type="submit">Найти</button>
+                </div>
+            </form>
+        </div>
+        <div class="mt-4"><h5>Список сотрудников:</h5></div>
+        <table class="table table-bordered table-hover table-sm">
+            <thead class="thead-dark">
+            <tr>
+                <th class="fit-column-by-content">ID сотрудника</th>
+                <th>Имя сотрудника</th>
+                <th>Отдел</th>
+                <th>Зарплата</th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employee: ${employees}">
+                <td th:utext="${employee.id}"></td>
+                <td th:utext="${employee.name}"></td>
+                <td th:utext="${employee.department.getName()}"></td>
+                <td th:utext="${employee.getFormattedSalary()}"></td>
+                <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
+                        class="btn btn-sm btn-block btn-outline-warning"
+                        th:href="@{|/employee/edit/${employee.id}|}">Изменить</a>
+                </td>
+                <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
+                        class="btn btn-sm btn-block btn-outline-danger"
+                        th:href="@{|/employee/delete/${employee.id}|}">Удалить</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="mt-4"><h5>Список сотрудников:</h5></div>
-    <table class="table table-bordered table-hover table-sm">
-        <thead class="thead-dark">
-        <tr>
-            <th class="fit-column-by-content">ID сотрудника</th>
-            <th>Имя сотрудника</th>
-            <th>Отдел</th>
-            <th>Зарплата</th>
-            <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-            <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="employee: ${employees}">
-            <td th:utext="${employee.id}"></td>
-            <td th:utext="${employee.name}"></td>
-            <td th:utext="${employee.department.getName()}"></td>
-            <td th:utext="${employee.getFormattedSalary()}"></td>
-            <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
-                    class="btn btn-sm btn-block btn-outline-warning" th:href="@{|/employee/edit/${employee.id}|}">Изменить</a>
-            </td>
-            <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
-                    class="btn btn-sm btn-block btn-outline-danger" th:href="@{|/employee/delete/${employee.id}|}">Удалить</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div th:insert="~{fragments/bootstrap :: jscripts}"></div>
+    <div th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </body>
 </html>

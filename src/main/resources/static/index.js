@@ -13,14 +13,6 @@ function minSalaryLessThanMax() {
     return true;
 }
 
-function checkEmployeeForm() {
-    return true;
-}
-
-function checkDepartmentForm() {
-    return true;
-}
-
 function checkUserForm() {
     if (document.getElementById("userId").value == document.getElementById("curUserId").value) {
         return confirm("Вы изменили настройки своего аккаунта. Будет произведен логаут. Продолжить?");

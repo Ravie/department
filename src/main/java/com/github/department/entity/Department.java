@@ -1,6 +1,9 @@
 package com.github.department.entity;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -8,6 +11,8 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank(message = "Имя не может быть пустым")
+    @Length(max = 255, message= "Имя превышает допустимую длину")
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     private User author;
@@ -38,6 +43,14 @@ public class Department {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     @Override

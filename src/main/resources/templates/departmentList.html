@@ -12,13 +12,22 @@
 <div class="container">
     <div sec:authorize="hasRole('ROLE_ADMIN')">
         <h5 class="mt-2">Добавление нового отдела:</h5>
-        <form method="post" onsubmit="return checkDepartmentForm();" th:action="@{/department}">
-            <label class="mr-1" for="name">Отдел:</label><input class="mr-2" id="name" name="name" placeholder="Отдел"
-                                                                required type="text"/>
+        <form method="post" th:action="@{/department}">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="name">Отдел:</label>
+                <div class="col-sm-6">
+                    <input class="form-control mr-2" id="name" name="name" placeholder="Отдел" type="text"
+                           th:classappend="${nameError != null} ? 'is-invalid' : ''"/>
+                    <div class="invalid-feedback" th:if="${nameError != null}" th:inline="text">
+                        [[${nameError}]]
+                    </div>
+                </div>
+            </div>
             <button class="btn btn-sm btn-outline-success mb-1" type="submit">Добавить отдел</button>
         </form>
     </div>
-    <a aria-controls="searchDepartment" aria-expanded="false" class="btn btn-primary my-2" data-toggle="collapse" href="#searchDepartment"
+    <a aria-controls="searchDepartment" aria-expanded="false" class="btn btn-primary my-2" data-toggle="collapse"
+       href="#searchDepartment"
        role="button">
         <div>Поиск</div>
     </a>

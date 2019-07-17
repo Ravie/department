@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -37,12 +40,22 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public String addDepartment(@AuthenticationPrincipal User user, @RequestParam String name, Model model) {
-        List<Department> depRepo = departmentRepo.findByName(name);
+    public String addDepartment(@AuthenticationPrincipal User user, @Valid Department department, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
 
-        if (depRepo.isEmpty()) {
-            Department department = new Department(name, user);
-            departmentRepo.save(department);
+            model.addAttribute("department", department);
+            model.mergeAttributes(errors);
+        } else {
+            List<Department> depRepo = departmentRepo.findByName(department.getName());
+
+            if (depRepo.isEmpty()) {
+                department.setAuthor(user);
+                departmentRepo.save(department);
+                model.addAttribute("nameError", null);
+            } else {
+                model.addAttribute("nameError", "Отдел с таким именем уже существует!");
+            }
         }
 
         Iterable<Department> departments = departmentRepo.findAll();

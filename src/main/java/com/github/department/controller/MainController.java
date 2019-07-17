@@ -9,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -82,17 +85,33 @@ public class MainController {
         return "index";
     }
 
+    // BindingResult must be before Model for correct work
     @PostMapping("/index")
-    public String addEmployee(@AuthenticationPrincipal User user, @RequestParam String name, @RequestParam Long depId, @RequestParam Double salary, Model model) {
-        List<Employee> employeeName = employeeRepo.findByName(name);
+    public String addEmployee(@AuthenticationPrincipal User user,
+                              @Valid Employee employee,
+                              BindingResult bindingResult,
+                              Model model) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("employee", employee);
+        } else {
+            List<Employee> employeeName = employeeRepo.findByName(employee.getName());
 
-        if (employeeName.isEmpty()) {
-            Employee employee = new Employee(name, depRepo.findById(depId).get(), salary, user);
-            employeeRepo.save(employee);
+            if (employeeName.isEmpty()) {
+                employee.setAuthor(user);
+                model.addAttribute("employee", null);
+                employeeRepo.save(employee);
+            }
         }
 
         Iterable<Employee> employeeRepoAll = employeeRepo.findAll();
         model.addAttribute("employees", employeeRepoAll);
-        return "redirect:/index";
+
+        Iterable<Department> departments = depRepo.findAll();
+        model.addAttribute("departments", departments);
+
+        return "index";
     }
+
 }

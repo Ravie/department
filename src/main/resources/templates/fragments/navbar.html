@@ -41,9 +41,9 @@
         </div>
 
         <form class="form-inline ml-auto mr-1" sec:authorize="isAnonymous()">
-            <a class="btn btn-primary" href="/register"
+            <a class="btn btn-primary mr-1" href="/register"
                th:if="${#httpServletRequest.requestURI != '/register'}">Регистрация</a>
-            <a class="btn btn-success" href="/login"
+            <a class="btn btn-success mr-1" href="/login"
                th:if="${#httpServletRequest.requestURI != '/login'}">Вход</a>
         </form>
     </nav>

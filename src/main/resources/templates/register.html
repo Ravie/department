@@ -9,15 +9,49 @@
 <div class="container mt-5">
     <h3>Регистрация нового пользователя:</h3>
     <form method="post" th:action="@{/register}">
-        <div th:if="${message != null}">
+        <div th:if="${accountError != null}">
             <div class="alert alert-danger" role="alert" th:inline="text">
-                [[${message}]]
+                [[${accountError}]]
             </div>
         </div>
-        <div th:insert="~{fragments/auth :: auth}"></div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="name">Имя пользователя:</label>
+            <div class="col-sm-6">
+                <input class="form-control" id="name" name="username" type="text"
+                       th:classappend="${usernameError != null} ? 'is-invalid' : ''" th:value="${user?.getUsername()}"/>
+                <div class="invalid-feedback" th:if="${usernameError != null}" th:inline="text">
+                    [[${usernameError}]]
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="password">Пароль:</label>
+            <div class="col-sm-6">
+                <input class="form-control" id="password" name="password" type="password"
+                       th:classappend="${passwordError != null} ? 'is-invalid' : ''"/>
+                <div class="invalid-feedback" th:if="${passwordError != null}" th:inline="text">
+                    [[${passwordError}]]
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="passwordConfirm">Подтвердите пароль:</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm"
+                       th:classappend="${passwordError != null} ? 'is-invalid' : ''"/>
+                <div class="invalid-feedback" th:if="${passwordError != null}" th:inline="text">
+                    [[${passwordError}]]
+                </div>
+            </div>
+        </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="email">Почта:</label>
-            <div class="col-sm-6"><input type="email" class="form-control" id="email" name="email" required/>
+            <div class="col-sm-6">
+                <input type="email" class="form-control" id="email" name="email"
+                       th:classappend="${emailError != null} ? 'is-invalid' : ''" th:value="${user?.getEmail()}"/>
+                <div class="invalid-feedback" th:if="${emailError != null}" th:inline="text">
+                    [[${emailError}]]
+                </div>
             </div>
         </div>
         <div><input class="btn btn-success" type="submit" value="ОК"/></div>
