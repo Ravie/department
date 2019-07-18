@@ -66,7 +66,7 @@
         <div class="collapse" id="searchEmployee">
             <form method="get" onsubmit="return minSalaryLessThanMax();" th:action="@{/index}">
                 <div class="form-column">
-                    <label class="mr-1" for="searchName">ФИО:</label><input class="mr-2" id="searchName" name="name"
+                    <label class="mr-1" for="searchName">Имя:</label><input class="mr-2" id="searchName" name="name"
                                                                             placeholder="ФИО" th:value="${name}"
                                                                             type="text"/>
                     <label class="mr-1" for="depId">Отдел:</label>
@@ -100,18 +100,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="employee: ${employees}">
-                <td th:utext="${employee.id}"></td>
-                <td th:utext="${employee.name}"></td>
-                <td th:utext="${employee.department.getName()}"></td>
-                <td th:utext="${employee.getFormattedSalary()}"></td>
+            <tr th:each="employee: ${employees}" th:with="currency=${T(java.text.NumberFormat)}">
+                <td th:utext="${employee[0]}"></td>
+                <td th:utext="${employee[1]}"></td>
+                <td th:utext="${employee[2]}"></td>
+                <td th:utext="${currency.getCurrencyInstance().format(employee[3])}"></td>
                 <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
                         class="btn btn-sm btn-block btn-outline-warning"
-                        th:href="@{|/employee/edit/${employee.id}|}">Изменить</a>
+                        th:href="@{|/employee/edit/${employee[0]}|}">Изменить</a>
                 </td>
                 <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
                         class="btn btn-sm btn-block btn-outline-danger"
-                        th:href="@{|/employee/delete/${employee.id}|}">Удалить</a>
+                        th:href="@{|/employee/delete/${employee[0]}|}">Удалить</a>
                 </td>
             </tr>
             </tbody>

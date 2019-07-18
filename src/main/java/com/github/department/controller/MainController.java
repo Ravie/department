@@ -40,10 +40,10 @@ public class MainController {
                         @RequestParam(required = false, defaultValue = "") Double maxSalary,
                         Model model
     ) {
+        /*
         List<Employee> employeesByName;
         List<Employee> employeesByDep;
         List<Employee> employeesBySalary;
-        Iterable<Department> departments = depRepo.findAll();
 
         if (name != null && !name.isEmpty()) {
             employeesByName = employeeRepo.findByNameIgnoreCaseContaining(name);
@@ -70,12 +70,9 @@ public class MainController {
         }
 
         employeesBySalary.retainAll(employeesByDep);
-
-        Page<Employee> empsPage = new PageImpl<>(
-                employeesBySalary,
-                pageable,
-                employeesBySalary.size()
-        );
+        */
+        Iterable<Department> departments = depRepo.findAll();
+        Page<Employee> empsPage = employeeRepo.filter(name, depId, minSalary, maxSalary, pageable);
 
         model.addAttribute("employees", empsPage);
         model.addAttribute("departments", departments);

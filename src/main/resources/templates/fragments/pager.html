@@ -1,34 +1,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="pageMiddleButtons (i, adjacentPages)">
-    <li class="page-item active" th:if="${i == page.getNumber()}"
-        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+<div th:fragment="pageMiddleButtons (i, adjacentPages, urlBuilder)">
+    <li class="page-item active" th:if="${i == page.getNumber()}">
         <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().toUriString()}}" th:inline="text">[[${i + 1}]]</a>
     </li>
     <li class="page-item"
-        th:if="${i != page.getNumber() && #lists.contains(#lists.toList(#numbers.sequence(page.getNumber() - adjacentPages, page.getNumber() + adjacentPages)), i)}"
-        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+        th:if="${i != page.getNumber() && #lists.contains(#lists.toList(#numbers.sequence(page.getNumber() - adjacentPages, page.getNumber() + adjacentPages)), i)}">
         <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().replaceQueryParam('size', page.getSize()).replaceQueryParam('page', i).toUriString()}}" th:inline="text">[[${i + 1}]]</a>
     </li>
 </div>
-<div th:fragment="pageStartEndButtons (i)">
-    <li class="page-item active" th:if="${i == page.getNumber()}"
-        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+<div th:fragment="pageStartEndButtons (i, urlBuilder)">
+    <li class="page-item active" th:if="${i == page.getNumber()}">
         <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().toUriString()}}" th:inline="text">[[${i + 1}]]</a>
     </li>
-    <li class="page-item" th:if="${i != page.getNumber()}"
-        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+    <li class="page-item" th:if="${i != page.getNumber()}">
         <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().replaceQueryParam('size', page.getSize()).replaceQueryParam('page', i).toUriString()}}" th:inline="text">[[${i + 1}]]</a>
     </li>
 </div>
-<div class="row" th:fragment="pageCustom (page)" th:if="${page.getTotalPages() > 0}">
+<div class="row" th:fragment="pageCustom (page)" th:if="${page.getTotalPages() > 0}"
+     th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
     <a aria-controls="goToPage" aria-expanded="false" class="btn btn-sm btn-primary my-2 ml-3"
        data-toggle="collapse" href="#goToPage" role="button">
         <div>Перейти к странице</div>
     </a>
     <div class="collapse ml-2" id="goToPage">
-        <form method="post" th:action="@{/goToPage}"
-              th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+        <form method="post" th:action="@{/goToPage}">
             <input type="number" id="pageNumber" name="pageNumber"
                    min="1" th:max="${page.getTotalPages()}" step="1"
                    th:value="${pageNumber}"/>
@@ -38,7 +34,7 @@
         </form>
     </div>
 </div>
-<div th:fragment="pages (page, adjacentPages)">
+<div th:fragment="pages (page, adjacentPages)" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
     <div>
         <nav aria-label="pages">
             <ul class="pagination">
@@ -47,22 +43,22 @@
                 </li>
                 <block class="row ml-1" th:if="${page.getTotalPages() < adjacentPages + 1 && page.getTotalPages() > 0}">
                     <th:block th:each="i: ${#numbers.sequence(0, page.getTotalPages() - 1)}">
-                        <div th:insert="~{fragments/pager :: pageMiddleButtons(${i}, ${adjacentPages})}"></div>
+                        <div th:insert="~{fragments/pager :: pageMiddleButtons(${i}, ${adjacentPages}, ${urlBuilder})}"></div>
                     </th:block>
                 </block>
                 <block class="row ml-1"  th:unless="${page.getTotalPages() < adjacentPages + 1}">
-                    <div th:insert="~{fragments/pager :: pageStartEndButtons(0)}"></div>
+                    <div th:insert="~{fragments/pager :: pageStartEndButtons(0, ${urlBuilder})}"></div>
                     <li class="page-item disabled" th:if="${page.getNumber() > adjacentPages + 1}">
                         <span class="page-link">...</span>
                     </li>
                     <th:block th:each="i: ${#numbers.sequence(1, page.getTotalPages() - 2)}">
-                        <div th:insert="~{fragments/pager :: pageMiddleButtons(${i}, ${adjacentPages})}"></div>
+                        <div th:insert="~{fragments/pager :: pageMiddleButtons(${i}, ${adjacentPages}, ${urlBuilder})}"></div>
                     </th:block>
                     <li class="page-item disabled"
                         th:if="${page.getNumber() + adjacentPages + 1 < page.getTotalPages() - 1}">
                         <span class="page-link">...</span>
                     </li>
-                    <div th:insert="~{fragments/pager :: pageStartEndButtons(${page.getTotalPages() - 1})}"></div>
+                    <div th:insert="~{fragments/pager :: pageStartEndButtons(${page.getTotalPages() - 1}, ${urlBuilder})}"></div>
                 </block>
             </ul>
         </nav>
@@ -71,22 +67,18 @@
         <nav aria-label="pages">
             <ul class="pagination">
                 <th:block th:each="i: ${#numbers.sequence(1, 100, 10)}">
-                    <li class="page-item active" th:if="${i == page.getSize()}"
-                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+                    <li class="page-item active" th:if="${i == page.getSize()}">
                         <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().toUriString()}}" th:inline="text">[[${i}]]</a>
                     </li>
-                    <li class="page-item" th:unless="${i == page.getSize()}"
-                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
-                        <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().replaceQueryParam('size', i).toUriString()}}" th:inline="text">[[${i}]]</a>
+                    <li class="page-item" th:unless="${i == page.getSize()}">
+                        <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().replaceQueryParam('size', i).replaceQueryParam('page', 0).toUriString()}}" th:inline="text">[[${i}]]</a>
                     </li>
                 </th:block>
-                <li class="page-item active" th:if="${page.getTotalElements() == page.getSize()}"
-                    th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+                <li class="page-item active" th:if="${page.getTotalElements() == page.getSize()}">
                     <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().toUriString()}}" th:inline="text">Все</a>
                 </li>
-                <li class="page-item" th:unless="${page.getTotalElements() == page.getSize()}"
-                    th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
-                    <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().replaceQueryParam('size', page.getTotalElements()).toUriString()}}" th:inline="text">Все</a>
+                <li class="page-item" th:unless="${page.getTotalElements() == page.getSize()}">
+                    <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().replaceQueryParam('size', page.getTotalElements()).replaceQueryParam('page', 0).toUriString()}}" th:inline="text">Все</a>
                 </li>
                 <li class="page-item disabled">
                     <a class="page-link">элементов</a>
