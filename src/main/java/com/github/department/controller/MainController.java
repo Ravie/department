@@ -34,7 +34,7 @@ public class MainController {
 
     @GetMapping("/index")
     public String index(@RequestParam(required = false, defaultValue = "") String name,
-                        @RequestParam(required = false) Long searchDepId,
+                        @RequestParam(required = false) Department depId,
                         @RequestParam(required = false, defaultValue = "") Double minSalary,
                         @RequestParam(required = false, defaultValue = "") Double maxSalary,
                         Model model
@@ -45,19 +45,15 @@ public class MainController {
         Iterable<Department> departments = depRepo.findAll();
 
         if (name != null && !name.isEmpty()) {
-            employeesByName = employeeRepo.findByName(name);
+            employeesByName = employeeRepo.findByNameLike(name);
         } else {
-            employeesByName = StreamSupport
-                    .stream(employeeRepo.findAll().spliterator(), false)
-                    .collect(Collectors.toList());
+            employeesByName = employeeRepo.findAll();
         }
 
-        if (searchDepId != null && depRepo.findById(searchDepId).isPresent()) {
-            employeesByDep = employeeRepo.findByDepartment(depRepo.findById(searchDepId).get());
+        if (depId != null) {
+            employeesByDep = employeeRepo.findByDepartment(depId);
         } else {
-            employeesByDep = StreamSupport
-                    .stream(employeeRepo.findAll().spliterator(), false)
-                    .collect(Collectors.toList());
+            employeesByDep = employeeRepo.findAll();
         }
 
         employeesByDep.retainAll(employeesByName);
@@ -69,9 +65,7 @@ public class MainController {
         } else if (maxSalary != null) {
             employeesBySalary = employeeRepo.findBySalaryLessThanEqual(maxSalary);
         } else {
-            employeesBySalary = StreamSupport
-                    .stream(employeeRepo.findAll().spliterator(), false)
-                    .collect(Collectors.toList());
+            employeesBySalary = employeeRepo.findAll();
         }
 
         employeesBySalary.retainAll(employeesByDep);
@@ -79,7 +73,7 @@ public class MainController {
         model.addAttribute("employees", employeesBySalary);
         model.addAttribute("departments", departments);
         model.addAttribute("name", name);
-        model.addAttribute("searchDepId", searchDepId);
+        model.addAttribute("depId", depId);
         model.addAttribute("minSalary", minSalary);
         model.addAttribute("maxSalary", maxSalary);
         return "index";
@@ -102,6 +96,8 @@ public class MainController {
                 employee.setAuthor(user);
                 model.addAttribute("employee", null);
                 employeeRepo.save(employee);
+            } else {
+                model.addAttribute("nameError", "Сотрудник с данным именем уже существует!");
             }
         }
 

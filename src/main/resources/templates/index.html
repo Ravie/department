@@ -27,13 +27,13 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="depId">Отдел:</label>
+                <label class="col-sm-2 col-form-label" for="department">Отдел:</label>
                 <div class="col-sm-6">
-                    <select class="custom-select form-control mr-2" id="depId" name="department"
+                    <select class="custom-select form-control mr-2" id="department" name="department"
                             th:classappend="${departmentError != null} ? 'is-invalid' : ''">
                         <option></option>
                         <option th:each="dep : ${departments}" th:text="${dep.getName()}"
-                                th:value="${dep.getId()}" th:selected="${employee?.getDepartment()}"></option>
+                                th:value="${dep.getId()}" th:selected="${dep == employee?.getDepartment()}"></option>
                     </select>
                 <div class="invalid-feedback" th:if="${departmentError != null}" th:inline="text">
                     [[${departmentError}]]
@@ -69,11 +69,11 @@
                     <label class="mr-1" for="searchName">ФИО:</label><input class="mr-2" id="searchName" name="name"
                                                                             placeholder="ФИО" th:value="${name}"
                                                                             type="text"/>
-                    <label class="mr-1" for="searchDepId">Отдел:</label>
-                    <select class="mr-2" id="searchDepId" name="searchDepId">
+                    <label class="mr-1" for="depId">Отдел:</label>
+                    <select class="mr-2" id="depId" name="depId">
                         <option></option>
                         <option th:each="dep : ${departments}" th:text="${dep.getName()}"
-                                th:value="${dep.getId()}"></option>
+                                th:value="${dep.getId()}" th:selected="${dep == depId}"></option>
                     </select>
                     <label class="mr-1" for="min">Мин ЗП:</label><input class="mr-2" id="min" min="11280.00"
                                                                         name="minSalary" placeholder="Мин" step="0.01"

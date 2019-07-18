@@ -66,13 +66,14 @@ public class DepartmentController {
     @GetMapping("/edit/{department}")
     public String departmentEditorForm(@PathVariable Department department, Model model) {
         model.addAttribute("currentDep", department);
+
         return "departmentEditor";
     }
 
     @GetMapping("/delete/{department}")
-    public String departmentDelete(@PathVariable Department department, Model model) {
+    public String departmentDelete(@PathVariable Department department) {
         departmentRepo.deleteById(department.getId());
-        model.addAttribute("departments", departmentRepo.findAll());
+
         return "redirect:/department";
     }
 

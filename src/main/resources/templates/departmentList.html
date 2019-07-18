@@ -14,7 +14,7 @@
         <h5 class="mt-2">Добавление нового отдела:</h5>
         <form method="post" th:action="@{/department}">
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="name">Отдел:</label>
+                <label class="col-sm-2 col-form-label" for="name">Имя отдела:</label>
                 <div class="col-sm-6">
                     <input class="form-control mr-2" id="name" name="name" placeholder="Отдел" type="text"
                            th:classappend="${nameError != null} ? 'is-invalid' : ''"/>
@@ -22,8 +22,8 @@
                         [[${nameError}]]
                     </div>
                 </div>
+                <button class="btn btn-sm btn-outline-success mb-1" type="submit">Добавить отдел</button>
             </div>
-            <button class="btn btn-sm btn-outline-success mb-1" type="submit">Добавить отдел</button>
         </form>
     </div>
     <a aria-controls="searchDepartment" aria-expanded="false" class="btn btn-primary my-2" data-toggle="collapse"
