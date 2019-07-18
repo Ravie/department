@@ -46,7 +46,7 @@ public class MainController {
         Iterable<Department> departments = depRepo.findAll();
 
         if (name != null && !name.isEmpty()) {
-            employeesByName = employeeRepo.findByNameLike(name);
+            employeesByName = employeeRepo.findByNameIgnoreCaseContaining(name);
         } else {
             employeesByName = employeeRepo.findAll();
         }

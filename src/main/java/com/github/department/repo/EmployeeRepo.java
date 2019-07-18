@@ -4,14 +4,14 @@ import com.github.department.entity.Department;
 import com.github.department.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface EmployeeRepo extends CrudRepository<Employee, Long> {
+public interface EmployeeRepo extends JpaRepository<Employee, Long> {
     Page<Employee> findByName(String name, Pageable pageable);
 
-    Page<Employee> findByNameLike(String name, Pageable pageable);
+    Page<Employee> findByNameIgnoreCaseContaining(String name, Pageable pageable);
 
     Page<Employee> findByDepartment(Department department, Pageable pageable);
 
@@ -25,7 +25,7 @@ public interface EmployeeRepo extends CrudRepository<Employee, Long> {
 
     List<Employee> findByName(String name);
 
-    List<Employee> findByNameLike(String name);
+    List<Employee> findByNameIgnoreCaseContaining(String name);
 
     List<Employee> findByDepartment(Department department);
 

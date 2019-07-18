@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -30,7 +31,7 @@ public class DepartmentController {
         Page<Department> departments;
 
         if (name != null && !name.isEmpty()) {
-            departments = departmentRepo.findByNameLike(name, pageable);
+            departments = departmentRepo.findByNameIgnoreCaseContaining(name, pageable);
         } else {
             departments = departmentRepo.findAll(pageable);
         }
@@ -52,7 +53,7 @@ public class DepartmentController {
             model.addAttribute("department", department);
             model.mergeAttributes(errors);
         } else {
-            Page<Department> depRepo = departmentRepo.findByName(department.getName(), pageable);
+            List<Department> depRepo = departmentRepo.findByName(department.getName());
 
             if (depRepo.isEmpty()) {
                 department.setAuthor(user);
