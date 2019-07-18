@@ -42,6 +42,8 @@
         </form>
     </div>
     <div class="mt-4"><h5>Список отделов:</h5></div>
+    <div th:insert="~{fragments/pager :: pageCustom(${departments})}"></div>
+    <div th:insert="~{fragments/pager :: pages(${departments}, 2)}"></div>
     <table class="table table-bordered table-hover table-sm table-fit">
         <thead class="thead-dark">
         <tr>
@@ -64,6 +66,7 @@
         </tr>
         </tbody>
     </table>
+    <div th:insert="~{fragments/pager :: pages(${departments}, 2)}"></div>
 </div>
 <div th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </body>

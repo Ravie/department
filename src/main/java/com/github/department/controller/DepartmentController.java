@@ -4,6 +4,10 @@ import com.github.department.entity.Department;
 import com.github.department.entity.User;
 import com.github.department.repo.DepartmentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Controller
 @RequestMapping("/department")
@@ -23,15 +24,15 @@ public class DepartmentController {
     DepartmentRepo departmentRepo;
 
     @GetMapping
-    public String findByDepartment(@RequestParam(required = false, defaultValue = "") String name, Model model) {
-        Iterable<Department> departments;
+    public String loadAll(@RequestParam(required = false, defaultValue = "") String name,
+                          @PageableDefault(sort= {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
+                          Model model) {
+        Page<Department> departments;
 
         if (name != null && !name.isEmpty()) {
-            departments = departmentRepo.findByName(name);
+            departments = departmentRepo.findByNameLike(name, pageable);
         } else {
-            departments = StreamSupport
-                    .stream(departmentRepo.findAll().spliterator(), false)
-                    .collect(Collectors.toList());
+            departments = departmentRepo.findAll(pageable);
         }
 
         model.addAttribute("departments", departments);
@@ -40,14 +41,18 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public String addDepartment(@AuthenticationPrincipal User user, @Valid Department department, BindingResult bindingResult, Model model) {
+    public String addDepartment(@PageableDefault(sort= {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
+                                @AuthenticationPrincipal User user,
+                                @Valid Department department,
+                                BindingResult bindingResult,
+                                Model model) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
 
             model.addAttribute("department", department);
             model.mergeAttributes(errors);
         } else {
-            List<Department> depRepo = departmentRepo.findByName(department.getName());
+            Page<Department> depRepo = departmentRepo.findByName(department.getName(), pageable);
 
             if (depRepo.isEmpty()) {
                 department.setAuthor(user);
@@ -58,7 +63,7 @@ public class DepartmentController {
             }
         }
 
-        Iterable<Department> departments = departmentRepo.findAll();
+        Page<Department> departments = departmentRepo.findAll(pageable);
         model.addAttribute("departments", departments);
         return "departmentList";
     }

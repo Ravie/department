@@ -86,6 +86,8 @@
             </form>
         </div>
         <div class="mt-4"><h5>Список сотрудников:</h5></div>
+        <div th:insert="~{fragments/pager :: pageCustom(${employees})}"></div>
+        <div th:insert="~{fragments/pager :: pages(${employees}, 2)}"></div>
         <table class="table table-bordered table-hover table-sm">
             <thead class="thead-dark">
             <tr>
@@ -114,6 +116,7 @@
             </tr>
             </tbody>
         </table>
+        <div th:insert="~{fragments/pager :: pages(${employees}, 2)}"></div>
     </div>
     <div th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </body>

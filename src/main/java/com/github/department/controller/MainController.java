@@ -6,6 +6,8 @@ import com.github.department.entity.User;
 import com.github.department.repo.DepartmentRepo;
 import com.github.department.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Controller
 public class MainController {
@@ -33,7 +33,8 @@ public class MainController {
     }
 
     @GetMapping("/index")
-    public String index(@RequestParam(required = false, defaultValue = "") String name,
+    public String index(@PageableDefault(sort= {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
+                        @RequestParam(required = false, defaultValue = "") String name,
                         @RequestParam(required = false) Department depId,
                         @RequestParam(required = false, defaultValue = "") Double minSalary,
                         @RequestParam(required = false, defaultValue = "") Double maxSalary,
@@ -70,7 +71,13 @@ public class MainController {
 
         employeesBySalary.retainAll(employeesByDep);
 
-        model.addAttribute("employees", employeesBySalary);
+        Page<Employee> empsPage = new PageImpl<>(
+                employeesBySalary,
+                pageable,
+                employeesBySalary.size()
+        );
+
+        model.addAttribute("employees", empsPage);
         model.addAttribute("departments", departments);
         model.addAttribute("name", name);
         model.addAttribute("depId", depId);
@@ -81,7 +88,8 @@ public class MainController {
 
     // BindingResult must be before Model for correct work
     @PostMapping("/index")
-    public String addEmployee(@AuthenticationPrincipal User user,
+    public String addEmployee(@PageableDefault(sort= {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
+                              @AuthenticationPrincipal User user,
                               @Valid Employee employee,
                               BindingResult bindingResult,
                               Model model) {
@@ -101,7 +109,7 @@ public class MainController {
             }
         }
 
-        Iterable<Employee> employeeRepoAll = employeeRepo.findAll();
+        Page<Employee> employeeRepoAll = employeeRepo.findAll(pageable);
         model.addAttribute("employees", employeeRepoAll);
 
         Iterable<Department> departments = depRepo.findAll();
