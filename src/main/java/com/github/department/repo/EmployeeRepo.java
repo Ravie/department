@@ -47,7 +47,7 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
             "from Employee empl " +
             "left join Department dep " +
             "on dep.id = empl.department " +
-            "where (empl.name like %:name% or :name = '') " +
+            "where (empl.name like CONCAT('%',:name, '%') or :name = '') " +
             "and (empl.department = :department or :department is null) " +
             "and ((empl.salary <= :maxSalary and :minSalary is null) " +
             "or (empl.salary >= :minSalary and :maxSalary is null) " +
