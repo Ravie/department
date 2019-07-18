@@ -17,7 +17,7 @@
         <a class="page-link" th:href="@{|?page=${i}&size=${page.getSize()}|}" th:inline="text">[[${i + 1}]]</a>
     </li>
 </div>
-<div class="row" th:fragment="pageCustom (page)">
+<div class="row" th:fragment="pageCustom (page)" th:if="${page.getTotalPages() > 0}">
     <a aria-controls="goToPage" aria-expanded="false" class="btn btn-sm btn-primary my-2 ml-3"
        data-toggle="collapse" href="#goToPage" role="button">
         <div>Перейти к странице</div>
@@ -39,10 +39,10 @@
     <div>
         <nav aria-label="pages">
             <ul class="pagination">
-                <li class="page-item disabled">
+                <li class="page-item disabled" th:if="${page.getTotalPages() > 0}">
                     <a class="page-link">Страница</a>
                 </li>
-                <block class="row ml-1" th:if="${page.getTotalPages() < adjacentPages + 1}">
+                <block class="row ml-1" th:if="${page.getTotalPages() < adjacentPages + 1 && page.getTotalPages() > 0}">
                     <th:block th:each="i: ${#numbers.sequence(0, page.getTotalPages() - 1)}">
                         <div th:insert="~{fragments/pager :: pageMiddleButtons(${i}, ${adjacentPages})}"></div>
                     </th:block>
