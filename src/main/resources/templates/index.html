@@ -101,17 +101,17 @@
             </thead>
             <tbody>
             <tr th:each="employee: ${employees}" th:with="currency=${T(java.text.NumberFormat)}">
-                <td th:utext="${employee[0]}"></td>
-                <td th:utext="${employee[1]}"></td>
-                <td th:utext="${employee[2]}"></td>
-                <td th:utext="${currency.getCurrencyInstance().format(employee[3])}"></td>
+                <td th:utext="${employee.getId()}"></td>
+                <td th:utext="${employee.getName()}"></td>
+                <td th:utext="${employee.getDepartment().getName()}"></td>
+                <td th:utext="${employee.getFormattedSalary()}"></td>
                 <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
                         class="btn btn-sm btn-block btn-outline-warning"
-                        th:href="@{|/employee/edit/${employee[0]}|}">Изменить</a>
+                        th:href="@{|/employee/edit/${employee.getId()}|}">Изменить</a>
                 </td>
                 <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
                         class="btn btn-sm btn-block btn-outline-danger"
-                        th:href="@{|/employee/delete/${employee[0]}|}">Удалить</a>
+                        th:href="@{|/employee/delete/${employee.getId()}|}">Удалить</a>
                 </td>
             </tr>
             </tbody>

@@ -23,10 +23,6 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
 
     Page<Employee> findBySalaryLessThanEqual(Double maxSalary, Pageable pageable);
 
-    @Query("select empl.id, empl.name, dep.name, empl.salary " +
-            "from Employee empl " +
-            "left join Department dep " +
-            "on dep.id = empl.department")
     Page<Employee> findAll(Pageable pageable);
 
     List<Employee> findByName(String name);
@@ -43,7 +39,7 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
 
     List<Employee> findAll();
 
-    @Query("select empl.id, empl.name, dep.name, empl.salary " +
+    @Query("select empl " +
             "from Employee empl " +
             "left join Department dep " +
             "on dep.id = empl.department " +
