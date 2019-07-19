@@ -1,7 +1,7 @@
 version: '3'
 services:
   postgresdb:
-    image: department_postgresdb
+    image: postgres:latest
     build: docker/pg/
     volumes:
       - db-data:/var/lib/postgresql/data/
