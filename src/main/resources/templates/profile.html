@@ -18,13 +18,14 @@
         <h2 class="mr-sm-2" th:inline="text">[[${#httpServletRequest.remoteUser}]]</h2>
         <div class="form-group">
             <label for="email">Новый адрес электронной почты:</label>
-            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" th:value="${email}">
+            <input aria-describedby="emailHelp" class="form-control" id="email" name="email" th:value="${email}"
+                   type="email">
         </div>
         <div class="form-group">
             <label for="password">Новый пароль:</label>
-            <input type="password" class="form-control" id="password" name="password">
+            <input class="form-control" id="password" name="password" type="password">
         </div>
-        <button type="submit" class="btn btn-sm btn-outline-success">Сохранить изменения</button>
+        <button class="btn btn-sm btn-outline-success" type="submit">Сохранить изменения</button>
     </form>
 </div>
 <div th:insert="~{fragments/bootstrap :: jscripts}"></div>

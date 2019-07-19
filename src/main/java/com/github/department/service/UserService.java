@@ -20,14 +20,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
+    HttpServletRequest httpServletRequest;
+    @Autowired
     private UserRepo userRepo;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    HttpServletRequest httpServletRequest;
-
     @Autowired
     private MailSender mailSender;
 

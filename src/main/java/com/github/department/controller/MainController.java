@@ -6,7 +6,9 @@ import com.github.department.entity.User;
 import com.github.department.repo.DepartmentRepo;
 import com.github.department.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -33,7 +35,7 @@ public class MainController {
     }
 
     @GetMapping("/index")
-    public String index(@PageableDefault(sort= {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
+    public String index(@PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
                         @RequestParam(required = false, defaultValue = "") String name,
                         @RequestParam(required = false) Department depId,
                         @RequestParam(required = false, defaultValue = "") Double minSalary,
@@ -85,7 +87,7 @@ public class MainController {
 
     // BindingResult must be before Model for correct work
     @PostMapping("/index")
-    public String addEmployee(@PageableDefault(sort= {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
+    public String addEmployee(@PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
                               @AuthenticationPrincipal User user,
                               @Valid Employee employee,
                               BindingResult bindingResult,

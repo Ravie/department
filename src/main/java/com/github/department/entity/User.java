@@ -17,10 +17,10 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotBlank(message = "Имя не может быть пустым")
-    @Length(max = 255, message= "Имя превышает допустимую длину")
+    @Length(max = 255, message = "Имя превышает допустимую длину")
     private String username;
     @NotBlank(message = "Пароль не может быть пустым")
-    @Length(max = 255, message= "Пароль превышает допустимую длину")
+    @Length(max = 255, message = "Пароль превышает допустимую длину")
     private String password;
     private Boolean active;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

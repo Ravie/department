@@ -13,7 +13,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotBlank(message = "Имя не может быть пустым")
-    @Length(max = 255, message= "Имя превышает допустимую длину")
+    @Length(max = 255, message = "Имя превышает допустимую длину")
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @NotNull(message = "Введите отдел")

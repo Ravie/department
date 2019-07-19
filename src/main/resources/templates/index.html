@@ -18,9 +18,9 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="name">ФИО:</label>
                 <div class="col-sm-6"><input class="form-control mr-2" id="name" name="name"
-                                             placeholder="ФИО" type="text"
-                                             th:classappend="${nameError != null} ? 'is-invalid' : ''"
-                                             th:value="${employee?.getName()}"/>
+                                             placeholder="ФИО" th:classappend="${nameError != null} ? 'is-invalid' : ''"
+                                             th:value="${employee?.getName()}"
+                                             type="text"/>
                     <div class="invalid-feedback" th:if="${nameError != null}" th:inline="text">
                         [[${nameError}]]
                     </div>
@@ -32,8 +32,8 @@
                     <select class="custom-select form-control mr-2" id="department" name="department"
                             th:classappend="${departmentError != null} ? 'is-invalid' : ''">
                         <option></option>
-                        <option th:each="dep : ${departments}" th:text="${dep.getName()}"
-                                th:value="${dep.getId()}" th:selected="${dep == employee?.getDepartment()}"></option>
+                        <option th:each="dep : ${departments}" th:selected="${dep == employee?.getDepartment()}"
+                                th:text="${dep.getName()}" th:value="${dep.getId()}"></option>
                     </select>
                     <div class="invalid-feedback" th:if="${departmentError != null}" th:inline="text">
                         [[${departmentError}]]
@@ -46,9 +46,9 @@
                     <input class="form-control mr-2" id="salary"
                            min="11280.00"
                            name="salary" placeholder="Зарплата"
+                           step="0.01"
                            th:classappend="${salaryError != null} ? 'is-invalid' : ''"
-                           th:value="${employee?.getSalary()}"
-                           step="0.01" type="number"/>
+                           th:value="${employee?.getSalary()}" type="number"/>
                     <div class="invalid-feedback" th:if="${salaryError != null}" th:inline="text">
                         [[${salaryError}]]
                     </div>
@@ -72,8 +72,8 @@
                     <label class="mr-1" for="depId">Отдел:</label>
                     <select class="mr-2" id="depId" name="depId">
                         <option></option>
-                        <option th:each="dep : ${departments}" th:text="${dep.getName()}"
-                                th:value="${dep.getId()}" th:selected="${dep == depId}"></option>
+                        <option th:each="dep : ${departments}" th:selected="${dep == depId}"
+                                th:text="${dep.getName()}" th:value="${dep.getId()}"></option>
                     </select>
                     <label class="mr-1" for="min">Мин ЗП:</label><input class="mr-2" id="min" min="11280.00"
                                                                         name="minSalary" placeholder="Мин" step="0.01"
@@ -88,13 +88,22 @@
         <div class="mt-4"><h5>Список сотрудников:</h5></div>
         <div th:insert="~{fragments/pager :: pageCustom(${employees})}"></div>
         <div th:insert="~{fragments/pager :: pages(${employees}, 2)}"></div>
-        <table class="table table-bordered table-hover table-sm" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+        <table class="table table-bordered table-hover table-sm"
+               th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
             <thead class="thead-dark">
             <tr>
-                <th class="fit-column-by-content"><div th:insert="~{fragments/sorter :: sorting('id', 'ID', ${urlBuilder})}"></div></th>
-                <th><div th:insert="~{fragments/sorter :: sorting('name', 'Имя', ${urlBuilder})}"></div></th>
-                <th><div th:insert="~{fragments/sorter :: sorting('department', 'Отдел', ${urlBuilder})}"></div></th>
-                <th><div th:insert="~{fragments/sorter :: sorting('salary', 'Зарплата', ${urlBuilder})}"></div></th>
+                <th class="fit-column-by-content">
+                    <div th:insert="~{fragments/sorter :: sorting('id', 'ID', ${urlBuilder})}"></div>
+                </th>
+                <th>
+                    <div th:insert="~{fragments/sorter :: sorting('name', 'Имя', ${urlBuilder})}"></div>
+                </th>
+                <th>
+                    <div th:insert="~{fragments/sorter :: sorting('department', 'Отдел', ${urlBuilder})}"></div>
+                </th>
+                <th>
+                    <div th:insert="~{fragments/sorter :: sorting('salary', 'Зарплата', ${urlBuilder})}"></div>
+                </th>
                 <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
                 <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
             </tr>

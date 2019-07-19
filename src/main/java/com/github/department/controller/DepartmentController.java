@@ -26,7 +26,7 @@ public class DepartmentController {
 
     @GetMapping
     public String loadAll(@RequestParam(required = false, defaultValue = "") String name,
-                          @PageableDefault(sort= {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
+                          @PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
                           Model model) {
         Page<Department> departments;
 
@@ -42,7 +42,7 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public String addDepartment(@PageableDefault(sort= {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
+    public String addDepartment(@PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable,
                                 @AuthenticationPrincipal User user,
                                 @Valid Department department,
                                 BindingResult bindingResult,

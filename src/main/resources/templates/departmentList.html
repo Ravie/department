@@ -16,8 +16,8 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="name">Имя отдела:</label>
                 <div class="col-sm-6">
-                    <input class="form-control mr-2" id="name" name="name" placeholder="Отдел" type="text"
-                           th:classappend="${nameError != null} ? 'is-invalid' : ''"/>
+                    <input class="form-control mr-2" id="name" name="name" placeholder="Отдел" th:classappend="${nameError != null} ? 'is-invalid' : ''"
+                           type="text"/>
                     <div class="invalid-feedback" th:if="${nameError != null}" th:inline="text">
                         [[${nameError}]]
                     </div>
