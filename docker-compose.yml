@@ -2,6 +2,7 @@ version: '3'
 services:
   postgresdb:
     image: postgres:latest
+    container_name: postgresdb
     build: docker/pg/
     volumes:
       - db-data:/var/lib/postgresql/data/
@@ -15,6 +16,7 @@ services:
       - 5432:5432
   departments:
     image: department_departments
+    container_name: departments
     build: docker/web_app/
     environment:
       - JDBC_URL=jdbc:postgresql://postgresdb:5432/departments
