@@ -58,76 +58,77 @@
                 <button class="btn btn-sm btn-outline-success mb-1" type="submit">Добавить сотрудника</button>
             </div>
         </form>
-        <a aria-controls="searchEmployee" aria-expanded="false" class="btn btn-primary my-2" data-toggle="collapse"
-           href="#searchEmployee"
-           role="button">
-            <div>Поиск</div>
-        </a>
-        <div class="collapse" id="searchEmployee">
-            <form method="get" onsubmit="return minSalaryLessThanMax();" th:action="@{/index}">
-                <div class="form-column">
-                    <label class="mr-1" for="searchName">Имя:</label><input class="mr-2" id="searchName" name="name"
-                                                                            placeholder="ФИО" th:value="${name}"
-                                                                            type="text"/>
-                    <label class="mr-1" for="depId">Отдел:</label>
-                    <select class="mr-2" id="depId" name="depId">
-                        <option></option>
-                        <option th:each="dep : ${departments}" th:selected="${dep == depId}"
-                                th:text="${dep.getName()}" th:value="${dep.getId()}"></option>
-                    </select>
-                    <label class="mr-1" for="min">Мин ЗП:</label><input class="mr-2" id="min" min="11280.00"
-                                                                        name="minSalary" placeholder="Мин" step="0.01"
-                                                                        th:value="${minSalary}" type="number"/>
-                    <label class="mr-1" for="max">Макс ЗП:</label><input class="mr-2" id="max" min="11280.00"
-                                                                         name="maxSalary" placeholder="Макс" step="0.01"
-                                                                         th:value="${maxSalary}" type="number"/>
-                    <button class="btn btn-sm btn-outline-success mb-1" id="filter" type="submit">Найти</button>
-                </div>
-            </form>
-        </div>
-        <div class="mt-4"><h5>Список сотрудников:</h5></div>
-        <div th:insert="~{fragments/pager :: pageCustom(${employees})}"></div>
-        <div th:insert="~{fragments/pager :: pages(${employees}, 2)}"></div>
-        <table class="table table-bordered table-hover table-sm"
-               th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
-            <thead class="thead-dark">
-            <tr>
-                <th class="fit-column-by-content">
-                    <div th:insert="~{fragments/sorter :: sorting('id', 'ID', ${urlBuilder})}"></div>
-                </th>
-                <th>
-                    <div th:insert="~{fragments/sorter :: sorting('name', 'Имя', ${urlBuilder})}"></div>
-                </th>
-                <th>
-                    <div th:insert="~{fragments/sorter :: sorting('department', 'Отдел', ${urlBuilder})}"></div>
-                </th>
-                <th>
-                    <div th:insert="~{fragments/sorter :: sorting('salary', 'Зарплата', ${urlBuilder})}"></div>
-                </th>
-                <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-                <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="employee: ${employees}" th:with="currency=${T(java.text.NumberFormat)}">
-                <td th:utext="${employee.getId()}"></td>
-                <td th:utext="${employee.getName()}"></td>
-                <td th:utext="${employee.getDepartment().getName()}"></td>
-                <td th:utext="${employee.getFormattedSalary()}"></td>
-                <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
-                        class="btn btn-sm btn-block btn-outline-warning"
-                        th:href="@{|/employee/edit/${employee.getId()}|}">Изменить</a>
-                </td>
-                <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
-                        class="btn btn-sm btn-block btn-outline-danger"
-                        th:href="@{|/employee/delete/${employee.getId()}|}">Удалить</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div th:insert="~{fragments/pager :: pages(${employees}, 2)}"></div>
     </div>
-    <div th:insert="~{fragments/bootstrap :: jscripts}"></div>
+    <a aria-controls="searchEmployee" aria-expanded="false" class="btn btn-primary my-2" data-toggle="collapse"
+       href="#searchEmployee"
+       role="button">
+        <div>Поиск</div>
+    </a>
+    <div class="collapse" id="searchEmployee">
+        <form method="get" onsubmit="return minSalaryLessThanMax();" th:action="@{/index}">
+            <div class="form-column">
+                <label class="mr-1" for="searchName">Имя:</label><input class="mr-2" id="searchName" name="name"
+                                                                        placeholder="ФИО" th:value="${name}"
+                                                                        type="text"/>
+                <label class="mr-1" for="depId">Отдел:</label>
+                <select class="mr-2" id="depId" name="depId">
+                    <option></option>
+                    <option th:each="dep : ${departments}" th:selected="${dep == depId}"
+                            th:text="${dep.getName()}" th:value="${dep.getId()}"></option>
+                </select>
+                <label class="mr-1" for="min">Мин ЗП:</label><input class="mr-2" id="min" min="11280.00"
+                                                                    name="minSalary" placeholder="Мин" step="0.01"
+                                                                    th:value="${minSalary}" type="number"/>
+                <label class="mr-1" for="max">Макс ЗП:</label><input class="mr-2" id="max" min="11280.00"
+                                                                     name="maxSalary" placeholder="Макс" step="0.01"
+                                                                     th:value="${maxSalary}" type="number"/>
+                <button class="btn btn-sm btn-outline-success mb-1" id="filter" type="submit">Найти</button>
+            </div>
+        </form>
+    </div>
+    <div class="mt-4"><h5>Список сотрудников:</h5></div>
+    <div th:insert="~{fragments/pager :: pageCustom(${employees})}"></div>
+    <div th:insert="~{fragments/pager :: pages(${employees}, 2)}"></div>
+    <table class="table table-bordered table-hover table-sm"
+           th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+        <thead class="thead-dark">
+        <tr>
+            <th class="fit-column-by-content">
+                <div th:insert="~{fragments/sorter :: sorting('id', 'ID', ${urlBuilder})}"></div>
+            </th>
+            <th>
+                <div th:insert="~{fragments/sorter :: sorting('name', 'Имя', ${urlBuilder})}"></div>
+            </th>
+            <th>
+                <div th:insert="~{fragments/sorter :: sorting('department', 'Отдел', ${urlBuilder})}"></div>
+            </th>
+            <th>
+                <div th:insert="~{fragments/sorter :: sorting('salary', 'Зарплата', ${urlBuilder})}"></div>
+            </th>
+            <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+            <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee: ${employees}" th:with="currency=${T(java.text.NumberFormat)}">
+            <td th:utext="${employee.getId()}"></td>
+            <td th:utext="${employee.getName()}"></td>
+            <td th:utext="${employee.getDepartment().getName()}"></td>
+            <td th:utext="${employee.getFormattedSalary()}"></td>
+            <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
+                    class="btn btn-sm btn-block btn-outline-warning"
+                    th:href="@{|/employee/edit/${employee.getId()}|}">Изменить</a>
+            </td>
+            <td class="fit-column-by-content" sec:authorize="hasRole('ROLE_ADMIN')"><a
+                    class="btn btn-sm btn-block btn-outline-danger"
+                    th:href="@{|/employee/delete/${employee.getId()}|}">Удалить</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:insert="~{fragments/pager :: pages(${employees}, 2)}"></div>
+</div>
+<div th:insert="~{fragments/bootstrap :: jscripts}"></div>
 </div>
 </body>
 </html>
