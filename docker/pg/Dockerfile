@@ -1,4 +1,4 @@
-FROM department_postgresdb
+FROM postgres:latest
 
 RUN test -d /docker-entrypoint-initdb.d || mkdir /docker-entrypoint-initdb.d
 COPY init.sh /docker-entrypoint-initdb.d/init.sh
