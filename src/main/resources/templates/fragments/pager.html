@@ -73,7 +73,7 @@
     <div>
         <nav aria-label="pages">
             <ul class="pagination">
-                <th:block th:each="i: ${#numbers.sequence(1, 100, 10)}">
+                <th:block th:each="i: ${#numbers.sequence(10, 20, 10)}">
                     <li class="page-item active" th:if="${i == page.getSize()}">
                         <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().toUriString()}}"
                            th:inline="text">[[${i}]]</a>
