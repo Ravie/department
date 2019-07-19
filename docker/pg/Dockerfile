@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM department_postgresdb
 
-COPY V1__InitDb.sql /docker-entrypoint-initdb.d/
-COPY load_data.sql /docker-entrypoint-initdb.d/
+RUN test -d /docker-entrypoint-initdb.d || mkdir /docker-entrypoint-initdb.d
+COPY init.sh /docker-entrypoint-initdb.d/init.sh
