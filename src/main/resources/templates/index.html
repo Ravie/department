@@ -88,13 +88,13 @@
         <div class="mt-4"><h5>Список сотрудников:</h5></div>
         <div th:insert="~{fragments/pager :: pageCustom(${employees})}"></div>
         <div th:insert="~{fragments/pager :: pages(${employees}, 2)}"></div>
-        <table class="table table-bordered table-hover table-sm">
+        <table class="table table-bordered table-hover table-sm" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
             <thead class="thead-dark">
             <tr>
-                <th class="fit-column-by-content">ID сотрудника</th>
-                <th>Имя сотрудника</th>
-                <th>Отдел</th>
-                <th>Зарплата</th>
+                <th class="fit-column-by-content"><div th:insert="~{fragments/sorter :: sorting('id', 'ID', ${urlBuilder})}"></div></th>
+                <th><div th:insert="~{fragments/sorter :: sorting('name', 'Имя', ${urlBuilder})}"></div></th>
+                <th><div th:insert="~{fragments/sorter :: sorting('department', 'Отдел', ${urlBuilder})}"></div></th>
+                <th><div th:insert="~{fragments/sorter :: sorting('salary', 'Зарплата', ${urlBuilder})}"></div></th>
                 <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
                 <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
             </tr>
