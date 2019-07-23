@@ -10,6 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
+
 @Controller
 @RequestMapping("/employee")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -33,18 +37,37 @@ public class EmployeeController {
         return "redirect:/index";
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public String saveChanges(@RequestParam("employeeId") Employee employee,
                               @RequestParam String name,
                               @RequestParam("depId") Department department,
-                              @RequestParam Double salary
+                              @RequestParam Double salary,
+                              Model model
     ) {
-        employee.setName(name);
-        employee.setDepartment(department);
-        employee.setSalary(salary);
+        try {
+            List<Employee> employeeName = employeeRepo.findByName(name);
 
-        employeeRepo.save(employee);
+            if (employeeName.isEmpty()) {
+                employee.setName(name);
+                employee.setDepartment(department);
+                employee.setSalary(salary);
 
-        return "redirect:/index";
+                employeeRepo.save(employee);
+
+                return "redirect:/index";
+            } else {
+                model.addAttribute("employee", employee);
+                model.addAttribute("departments", departmentRepo.findAll());
+                model.addAttribute("nameError", "Сотрудник с данным именем уже существует!");
+
+                return "employee";
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", e.getLocalizedMessage());
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            model.addAttribute("stackTrace", sw.toString());
+            return "error";
+        }
     }
 }
