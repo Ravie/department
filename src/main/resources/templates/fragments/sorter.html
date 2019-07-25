@@ -2,15 +2,11 @@
 
 <div th:fragment="sorting (column, colName, urlBuilder)">
     <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().replaceQueryParam('sort', column+',asc').toUriString().
-       replaceAll('&sort='+column,'').
-       replaceAll('sort='+column,'').
-       replaceAll('sort=asc','sort='+column+',asc')}}"
+       replaceAll('sort='+column+'&sort=asc','sort='+column+',asc')}}"
        th:unless="${urlBuilder.fromCurrentRequest().toUriString().contains('sort='+column)}"
        th:inline="text">[[${colName}]]</a>
     <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().replaceQueryParam('sort', column+',desc').toUriString().
-       replaceAll('&sort='+column,'').
-       replaceAll('sort='+column,'').
-       replaceAll('sort=desc','sort='+column+',desc')}}"
+       replaceAll('sort='+column+'&sort=desc','sort='+column+',desc')}}"
        th:if="${urlBuilder.fromCurrentRequest().toUriString().contains('sort='+column+',asc')}"
        th:inline="text">[[${colName}]]</a>
     <a class="page-link" th:href="@{${urlBuilder.fromCurrentRequest().replaceQueryParam('sort', '').toUriString()}}"
