@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/employee")
@@ -47,7 +48,7 @@ public class EmployeeController {
         try {
             List<Employee> employeeName = employeeRepo.findByName(name);
 
-            if (employeeName.isEmpty()) {
+            if (employeeName.isEmpty() || Objects.equals(employeeName.get(0).getId(), employee.getId())) {
                 employee.setName(name);
                 employee.setDepartment(department);
                 employee.setSalary(salary);
