@@ -34,7 +34,7 @@
             <input id="pageNumber" min="1" name="pageNumber"
                    step="1" th:max="${page.getTotalPages()}" th:value="${pageNumber}"
                    type="number"/>
-            <input id="uri" name="uri" th:value="@{${urlBuilder.fromCurrentRequest().toUriString()}}"
+            <input id="uri" name="uri" th:value="${urlBuilder.fromCurrentRequest().toUriString()}"
                    type="hidden"/>
             <button class="btn btn-sm btn-outline-success my-2 ml-1" type="submit">Перейти</button>
         </form>
