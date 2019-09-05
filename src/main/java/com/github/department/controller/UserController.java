@@ -39,15 +39,15 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PostMapping("{user}")
+    @PostMapping("{userId}")
     public String saveChanges(@AuthenticationPrincipal User curUser,
-                              @RequestParam("userId") User user,
+                              @PathVariable("userId") User user,
                               @RequestParam String username,
                               @RequestParam Map<String, String> form
     ) throws ServletException {
         userService.updateUserSettings(curUser, user, username, form);
 
-        return "redirect:/user/{user}?success=true";
+        return "redirect:/user/{userId}?success=true";
     }
 
     @GetMapping("profile")
