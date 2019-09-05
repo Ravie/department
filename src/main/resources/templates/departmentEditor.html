@@ -9,7 +9,7 @@
 <body>
 <div th:insert="~{fragments/navbar :: navbar}"></div>
 <div class="container">
-    <form class="mt-5" method="POST" onsubmit="return checkDepartmentForm();" th:action="@{/department/edit/}"
+    <form class="mt-5" method="POST" th:action="@{/department/edit/}"
           th:object="${currentDep}">
         <label class="mr-1" for="name">Введите новое имя отдела:</label>
         <input class="mr-2" id="name" name="depName" required th:field="*{name}" type="text">

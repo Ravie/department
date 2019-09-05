@@ -11,7 +11,7 @@
 <div th:insert="~{fragments/navbar :: navbar}"></div>
 <div class="container">
     <div sec:authorize="hasRole('ROLE_ADMIN')">
-        <form class="mt-5" method="post" onsubmit="return checkEmployeeForm();" th:action="@{/employee/save}">
+        <form class="mt-5" method="post" th:action="@{/employee/save}">
             <div class="alert alert-danger mt-5" role="alert" th:if="${nameError != null}" th:inline="text">
                 [[${nameError}]]
             </div>
