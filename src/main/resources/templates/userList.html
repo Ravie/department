@@ -17,9 +17,9 @@
         </thead>
         <tbody>
         <tr th:each="user: ${users}">
-            <td th:utext="${user.username}"/>
+            <td th:utext="${user.username}"></td>
             <td>
-                <div th:text="${#strings.setJoin(user.accessLevel, ', ')}"/>
+                <div th:text="${#strings.setJoin(user.accessLevel, ', ')}"></div>
             </td>
             <td class="fit-column-by-content"><a class="btn btn-sm btn-block btn-outline-warning"
                                                  th:href="@{|/user/${user.id}|}">Изменить</a></td>

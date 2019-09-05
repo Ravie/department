@@ -20,7 +20,7 @@
         <div th:each="role:${roles}">
             <label>
                 <input th:checked="${#lists.contains(user.accessLevel, role)}" th:name="${role}" type="checkbox">
-                <td th:utext="${role}"/>
+                <td th:utext="${role}"></td>
             </label>
         </div>
         <input id="userId" name="userId" th:value="${user.id}" type="hidden">
