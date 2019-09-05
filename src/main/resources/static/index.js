@@ -14,7 +14,7 @@ function minSalaryLessThanMax() {
 }
 
 function checkUserForm() {
-    if (document.getElementById("userId").value == document.getElementById("curUserId").value) {
+    if (document.getElementById("userId").value === document.getElementById("curUserId").value) {
         return confirm("Вы изменили настройки своего аккаунта. Будет произведен логаут. Продолжить?");
         // sweetalert2 uses promises and didn't block submit form
         /*swal(await {
