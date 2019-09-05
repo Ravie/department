@@ -18,7 +18,8 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="name">Имя пользователя:</label>
             <div class="col-sm-6">
-                <input class="form-control" id="name" name="username" th:classappend="${usernameError != null} ? 'is-invalid' : ''"
+                <input class="form-control" id="name" name="username"
+                       th:classappend="${usernameError != null} ? 'is-invalid' : ''"
                        th:value="${user?.getUsername()}" type="text"/>
                 <div class="invalid-feedback" th:if="${usernameError != null}" th:inline="text">
                     [[${usernameError}]]
@@ -28,7 +29,8 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="password">Пароль:</label>
             <div class="col-sm-6">
-                <input class="form-control" id="password" name="password" th:classappend="${passwordError != null} ? 'is-invalid' : ''"
+                <input class="form-control" id="password" name="password"
+                       th:classappend="${passwordError != null} ? 'is-invalid' : ''"
                        type="password"/>
                 <div class="invalid-feedback" th:if="${passwordError != null}" th:inline="text">
                     [[${passwordError}]]
@@ -38,7 +40,8 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="passwordConfirm">Подтвердите пароль:</label>
             <div class="col-sm-6">
-                <input class="form-control" id="passwordConfirm" name="passwordConfirm" th:classappend="${passwordError != null} ? 'is-invalid' : ''"
+                <input class="form-control" id="passwordConfirm" name="passwordConfirm"
+                       th:classappend="${passwordError != null} ? 'is-invalid' : ''"
                        type="password"/>
                 <div class="invalid-feedback" th:if="${passwordConfirmError != null}" th:inline="text">
                     [[${passwordConfirmError}]]
@@ -48,7 +51,8 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="email">Почта:</label>
             <div class="col-sm-6">
-                <input class="form-control" id="email" name="email" th:classappend="${emailError != null} ? 'is-invalid' : ''"
+                <input class="form-control" id="email" name="email"
+                       th:classappend="${emailError != null} ? 'is-invalid' : ''"
                        th:value="${user?.getEmail()}" type="email"/>
                 <div class="invalid-feedback" th:if="${emailError != null}" th:inline="text">
                     [[${emailError}]]
